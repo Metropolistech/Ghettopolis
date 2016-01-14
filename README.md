@@ -28,7 +28,7 @@ This is the API of the project Metropolis.watch
 * id
 * url (String)
 * height (Integer)
-* Width (Integer)
+* width (Integer)
 
 ##### BackstagePost
 * id
@@ -51,12 +51,12 @@ This is the API of the project Metropolis.watch
 ##### TeamRole
 * id
 * project_id (References)
-* TeamRoleType (References)
+* teamRoleType_id (References)
 * user_id (References)
 
 ##### TeamRoleType
 * id
-* Name (String)
+* name (String)
 
 ##### Notification
 * id
