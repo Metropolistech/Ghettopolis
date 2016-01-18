@@ -11,7 +11,7 @@ RSpec.describe Api::RegistrationsController, type: :controller do
 
       it "Return a 404" do
         expect(response.status).to eq(404)
-        expect(JSON(response.body)['error']).to eq("Missing parameters")
+        expect(JSON(response.body)['errors'].blank?).to eq(false)
       end
     end
 
