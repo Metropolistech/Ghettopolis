@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
-  devise_for :users
+  namespace :api do
+    devise_scope :user do
+      # Registrations
+      match 'register' => 'registrations#create', :via => :post, :as => :user_registration
+      # Sessions
+      match 'session' => 'sessions#create', :via => :post
+      match 'session' => 'session#destroy', :via => :delete
+    end
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
