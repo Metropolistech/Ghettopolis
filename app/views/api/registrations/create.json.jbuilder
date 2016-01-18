@@ -1,12 +1,8 @@
 if @user.errors.present?
+  json.status 401
   json.errors @user.errors.messages
-  json.response do
-    json.code 422
-  end
 else
-  json.response do
-    json.code 201
-  end
+  json.status 201
   json.data do
     json.user do
       json.id @user.id

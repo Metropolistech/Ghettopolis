@@ -1,6 +1,4 @@
-json.response do
-  json.code 201
-end
+json.status 201
 json.data do
   json.user do
     json.id @user.id

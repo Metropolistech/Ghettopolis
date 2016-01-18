@@ -40,7 +40,7 @@ class Api::BaseController < ActionController::Base
   end
 
   def render_unauthorized(payload = payload_error)
-    render json: payload.merge({ status: 401 }), status: 401
+    render json: { status: 401 }.merge(payload), status: 401
   end
 
   def token_from_request
