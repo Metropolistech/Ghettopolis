@@ -4,7 +4,7 @@ class Api::SessionsController < Api::BaseController
 
   def create
     @user = User.find_for_database_authentication(email: user_params[:email])
-    return invalid_login_attempt unless @user
+    return invalid_user unless @user
     return invalid_login_attempt unless @user.valid_password?(user_params[:password])
     @auth_token = JsonWebToken.encode("user_email" => @user.email)
   end
@@ -22,6 +22,10 @@ class Api::SessionsController < Api::BaseController
   end
 
   def invalid_login_attempt
-    render_unauthorized errors: { unauthenticated: ["Invalid credentials"]}
+    render_unauthorized errors: { password: "Mot de passe erroné" }
+  end
+
+  def invalid_user
+    render_unauthorized errors: { email: "Utilisateur introuvable" }
   end
 end
