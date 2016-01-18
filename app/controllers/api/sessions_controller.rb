@@ -6,19 +6,26 @@ class Api::SessionsController < Api::BaseController
     @user = User.find_for_database_authentication(email: user_params[:email])
     return invalid_user unless @user
     return invalid_login_attempt unless @user.valid_password?(user_params[:password])
+
     @auth_token = JsonWebToken.encode("user_email" => @user.email)
   end
 
   private
 
   def user_params
-    params.require(:user).permit(:email, :password)
+    begin
+      params.require(:user).permit(:email, :password)
+    rescue
+      nil
+    end
   end
 
   def ensure_params_exist
-    if user_params[:email].blank? || user_params[:password].blank?
-      return render_unauthorized errors: { unauthenticated: ["Incomplete credentials"]}
-    end
+    return render json: { errors: { message: "Missing parameters" } }, status: 404 if user_params.blank? || user_params[:email].blank? || user_params[:password].blank?
+
+    # if user_params[:email].blank? || user_params[:password].blank?
+    #   return render_unauthorized errors: { unauthenticated: ["Incomplete credentials"]}
+    # end
   end
 
   def invalid_login_attempt
