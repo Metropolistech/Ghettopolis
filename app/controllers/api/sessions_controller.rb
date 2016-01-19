@@ -2,6 +2,7 @@ class Api::SessionsController < Api::BaseController
   skip_before_filter :authenticate_user_from_jwt!
   before_filter :ensure_params_exist
 
+  # POST /api/session
   def create
     if token_params
       return open_session
@@ -24,19 +25,15 @@ class Api::SessionsController < Api::BaseController
   private
 
   def user_params
-    begin
-      params.require(:user).permit(:email, :password)
+    params.require(:user).permit(:email, :password)
     rescue
       nil
-    end
   end
 
   def token_params
-    begin
-      params.require(:token)
+    params.require(:token)
     rescue
       nil
-    end
   end
 
   def ensure_user_params_exist
