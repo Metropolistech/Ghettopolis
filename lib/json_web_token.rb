@@ -15,4 +15,8 @@ class JsonWebToken
       # we don't need to trow errors, just return nil if JWT is invalid or expired
       nil
   end
+
+  def self.create_user_payload(user)
+    { user_id: user.id, user_email: user.email, user_username: user.username }
+  end
 end
