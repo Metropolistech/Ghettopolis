@@ -6,8 +6,6 @@ class Api::BaseController < ActionController::Base
 
   before_filter :authenticate_user_from_jwt!
 
-  payload_error = { errors: { unauthorized: ["You are not authorized perform this action."]} }
-
   protected
 
   def current_user
@@ -26,28 +24,31 @@ class Api::BaseController < ActionController::Base
   alias_method :devise_user_signed_in?, :user_signed_in?
 
   def authenticate_user_from_jwt!
-    if claims and user = User.find_by(email: claims.first['user']) and user.valid_password?(claims.first['password'])
-      @current_user = user
+    if claims and user = User.find(claims['user_id']) and user.email == claims['user_email']
+      @user = user
     else
       return render_unauthorized
     end
   end
 
   def claims
-    JsonWebToken.decode(token_from_request)
+    begin
+      JsonWebToken.decode(token_from_request)
     rescue
       nil
+    end
   end
 
-  def render_unauthorized(payload = payload_error)
+  def render_unauthorized(payload = { errors: { message: "You are not authorized perform this action." } })
     render json: { status: 401 }.merge(payload), status: 401
   end
 
   def token_from_request
-    auth_header = request.headers['Authorization'] and token = auth_header.split(' ').last
-    if token.to_s.empty?
-      return render_unauthorized
+    auth_header = request.headers['Authorization'] and @auth_token = auth_header.split(' ').last
+    if @auth_token.to_s.empty?
+      @auth_token = params[:token]
+      return render_unauthorized if @auth_token.to_s.empty?
     end
-    token
+    @auth_token
   end
 end
