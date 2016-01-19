@@ -1,5 +1,5 @@
-class Api::RegistrationsController < Api::BaseController
-  skip_before_filter :authenticate_user_from_jwt!
+class Api::V1::RegistrationsController < Api::BaseController
+  skip_before_filter :authenticate_user_from_token!
 
   # POST /api/register
   def create

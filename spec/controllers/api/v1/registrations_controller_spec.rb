@@ -1,4 +1,4 @@
-RSpec.describe Api::RegistrationsController, type: :controller do
+RSpec.describe Api::V1::RegistrationsController, type: :controller do
   render_views
 
   let(:json) { JSON.parse(response.body) }

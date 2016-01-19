@@ -1,4 +1,4 @@
-RSpec.describe Api::SessionsController, type: :controller do
+RSpec.describe Api::V1::SessionsController, type: :controller do
   render_views
 
   let(:json) { JSON.parse(response.body) }

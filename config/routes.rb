@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
   namespace :api do
-    devise_scope :user do
-      # Registrations
-      match 'register' => 'registrations#create', :via => :post, :as => :user_registration
-      # Sessions
-      match 'session' => 'sessions#create', :via => :post
-      match 'session' => 'session#destroy', :via => :delete
+    namespace :v1 do
+      devise_scope :user do
+        # Registrations
+        match 'register' => 'registrations#create', :via => :post, :as => :user_registration
+        # Sessions
+        match 'session' => 'sessions#create', :via => :post
+        match 'session' => 'session#destroy', :via => :delete
+      end
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

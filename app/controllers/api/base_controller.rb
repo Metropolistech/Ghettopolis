@@ -4,7 +4,7 @@ class Api::BaseController < ActionController::Base
   include ActionController::ImplicitRender
   respond_to :json
 
-  before_filter :authenticate_user_from_jwt!
+  before_filter :authenticate_user_from_token!
 
   protected
 
@@ -12,7 +12,7 @@ class Api::BaseController < ActionController::Base
     if token_from_request.blank?
       nil
     else
-      authenticate_user_from_jwt!
+      authenticate_user_from_token!
     end
   end
   # To current_user became devise_current_user
@@ -23,7 +23,7 @@ class Api::BaseController < ActionController::Base
   end
   alias_method :devise_user_signed_in?, :user_signed_in?
 
-  def authenticate_user_from_jwt!
+  def authenticate_user_from_token!
     if claims and user = User.find(claims['user_id']) and user.email == claims['user_email']
       @user = user
     else

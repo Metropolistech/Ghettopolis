@@ -1,5 +1,5 @@
-class Api::SessionsController < Api::BaseController
-  skip_before_filter :authenticate_user_from_jwt!
+class Api::V1::SessionsController < Api::BaseController
+  skip_before_filter :authenticate_user_from_token!
   before_filter :ensure_params_exist
 
   # POST /api/session
@@ -19,7 +19,7 @@ class Api::SessionsController < Api::BaseController
   end
 
   def open_session
-    authenticate_user_from_jwt!
+    authenticate_user_from_token!
   end
 
   private
