@@ -54,8 +54,8 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
 
     context "when user password is incorrect" do
       before do
-        create_user do
-          post :create, format: :json, :user => { email: "homer@contact.com", password: "KillBartRightNow" }
+        create_user do |user|
+          post :create, format: :json, :user => { email: user.email, password: "azerty" }
         end
       end
 
@@ -69,51 +69,49 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
     end
 
     context "When user and password are good" do
-      user = nil
-
       before do
-        create_user do
-          post :create, format: :json, :user => { email: @user.email, password: @user.password }
+        create_user do |user|
+          post :create, format: :json, :user => { email: user.email, password: user.password }
         end
       end
 
       it "return data status 201 and user object with new token" do
         response_data = JSON(response.body)
-        returned_user = response_data['data']['user']
 
         expect(response.status).to eq(200)
         expect(response_data['status']).to eq(201)
 
-        expect(returned_user['username']).to eq(@user['username'])
-        expect(returned_user['email']).to eq(@user['email'])
-
+        expect(response_data['data']['user'].blank?).to eq(false)
         expect(response_data['data']['token'].blank?).to eq(false)
+
+        returned_user = response_data['data']['user']
+        expect(returned_user['username'].blank?).to eq(false)
+        expect(returned_user['email'].blank?).to eq(false)
       end
     end
 
     context "when open session with available token" do
-      user = nil
-      token = nil
-
       before do
-        create_user do
-          post :create, format: :json, :user => { email: @user.email, password: @user.password }
-          token = JSON(response.body)['data']['token']
-          post :create, format: :json, :token => token.to_s
+        create_user do |user|
+          # Request a token
+          post :create, format: :json, :user => { email: user.email, password: user.password }
+          # Open session with the requested token
+          post :create, format: :json, :token => JSON(response.body)['data']['token'].to_s
         end
       end
 
       it "return data status 201 and user object with same token" do
         response_data = JSON(response.body)
-        returned_user = response_data['data']['user']
 
         expect(response.status).to eq(200)
         expect(response_data['status']).to eq(201)
 
-        expect(returned_user['username']).to eq(@user['username'])
-        expect(returned_user['email']).to eq(@user['email'])
+        expect(response_data['data']['user'].blank?).to eq(false)
+        expect(response_data['data']['token'].blank?).to eq(false)
 
-        expect(response_data['data']['token']).to eq(token)
+        returned_user = response_data['data']['user']
+        expect(returned_user['username'].blank?).to eq(false)
+        expect(returned_user['email'].blank?).to eq(false)
       end
     end
   end
