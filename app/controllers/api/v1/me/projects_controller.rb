@@ -22,9 +22,14 @@ class Api::V1::Me::ProjectsController < Api::BaseController
     render_error(message: "Missing params")
   end
 
+  def show
+    @project = Project.find(params[:id])
+  end
+
   # DELETE /me/projects/:id
   def destroy
-
+    current_user.delete_project!(params[:id])
+    render json: { status: 200, data: { message: "Project deleted" } }
   end
 
   private
