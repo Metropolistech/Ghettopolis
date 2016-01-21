@@ -1,8 +1,10 @@
 class Api::V1::Me::ProjectsController < Api::BaseController
+  # GET /me/projects
   def index
     @projects = current_user.projects
   end
 
+  # POST /me/projects
   def create
     if projects_params
       @project = current_user.create_project!(data: projects_params)
@@ -11,10 +13,16 @@ class Api::V1::Me::ProjectsController < Api::BaseController
     render_error(message: "Missing params")
   end
 
+  # PUT /me/projects/:id
   def update
-
+    if projects_params
+      @project = current_user.update_project!(project_id: params[:id], data: projects_params)
+      return @project ? @project : render_error(message: "Cannot update project")
+    end
+    render_error(message: "Missing params")
   end
 
+  # DELETE /me/projects/:id
   def destroy
 
   end
