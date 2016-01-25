@@ -192,24 +192,19 @@ RSpec.describe User, type: :model do
     #   expect(user.in_competition_projets).to eq(1)
     # end
 
-    it "cannot remove a project from competition" do
-      pending "Awaiting instructions to implement this test"
+    xit "cannot remove a project from competition" do
     end
 
-    it "can delete an in_competition project" do
-      pending "Awaiting instructions to implement this test"
+    xit "can delete an in_competition project" do
     end
 
-    it "can get projects in_competition" do
-      pending "Awaiting instructions to implement this test"
+    xit "can get projects in_competition" do
     end
 
-    it "can get projects not in_competition" do
-      pending "Awaiting instructions to implement this test"
+    xit "can get projects not in_competition" do
     end
 
-    it "can get all projects" do
-      pending "Awaiting instructions to implement this test"
+    xit "can get all projects" do
     end
 
     # describe "#follow_project & #unfollow_project" do
@@ -234,24 +229,19 @@ RSpec.describe User, type: :model do
   end
 
   describe "self methods" do
-    it "can get his personnal data" do
-      pending "Awaiting instructions to implement this test"
+    xit "can get his personnal data" do
     end
 
-    it "can update his data" do
-      pending "Awaiting instructions to implement this test"
+    xit "can update his data" do
     end
 
-    it "can get his followers" do
-      pending "Awaiting instructions to implement this test"
+    xit "can get his followers" do
     end
 
-    it "can get his followings" do
-      pending "Awaiting instructions to implement this test"
+    xit "can get his followings" do
     end
 
-    it "can get his followings projects" do
-      pending "Awaiting instructions to implement this test"
+    xit "can get his followings projects" do
     end
   end
 end
