@@ -70,6 +70,67 @@ This is the API of the project Metropolis.watch
 * id
 * content (String)
 
+## Routes
+Endpoints are available after /api/v1/.
+#### Authentication
+**POST**	/register
+
+To signup a new user.
+
+*  username
+* email
+* password
+* password_confirmation
+
+**POST** /session
+
+To  signin a user
+
+By user logins :
+
+* email
+* password
+
+By token :
+
+* token
+
+#### Authenticated user data
+
+**GET** /me
+
+Gives authenticated user data
+
+**PUT** /me
+
+To update authenticated user data
+
+* username
+* email
+* password
+
+**DELETE** /me
+
+To disable user account
+
+#### Authenticated user projects
+
+**GET** /me/projects
+
+Gives all user projects
+
+**POST** /me/projects
+
+Create a new user project
+
+**PUT** /me/projects/:id
+
+Update an existing project
+
+**DELETE** /me/projects/:id
+
+Delete an existing project
+
 ## TODO
 * Add TDD
 * Add Models
