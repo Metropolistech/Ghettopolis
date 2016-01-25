@@ -193,23 +193,23 @@ RSpec.describe User, type: :model do
     # end
 
     it "cannot remove a project from competition" do
-      skip("Awaiting instructions to implement this test")
+      pending "Awaiting instructions to implement this test"
     end
 
     it "can delete an in_competition project" do
-      skip("Awaiting instructions to implement this test")
+      pending "Awaiting instructions to implement this test"
     end
 
     it "can get projects in_competition" do
-      skip("Awaiting instructions to implement this test")
+      pending "Awaiting instructions to implement this test"
     end
 
     it "can get projects not in_competition" do
-      skip("Awaiting instructions to implement this test")
+      pending "Awaiting instructions to implement this test"
     end
 
     it "can get all projects" do
-      skip("Awaiting instructions to implement this test")
+      pending "Awaiting instructions to implement this test"
     end
 
     # describe "#follow_project & #unfollow_project" do
@@ -235,23 +235,23 @@ RSpec.describe User, type: :model do
 
   describe "self methods" do
     it "can get his personnal data" do
-      skip("Awaiting instructions to implement this test")
+      pending "Awaiting instructions to implement this test"
     end
 
     it "can update his data" do
-      skip("Awaiting instructions to implement this test")
+      pending "Awaiting instructions to implement this test"
     end
 
     it "can get his followers" do
-      skip("Awaiting instructions to implement this test")
+      pending "Awaiting instructions to implement this test"
     end
 
     it "can get his followings" do
-      skip("Awaiting instructions to implement this test")
+      pending "Awaiting instructions to implement this test"
     end
 
     it "can get his followings projects" do
-      skip("Awaiting instructions to implement this test")
+      pending "Awaiting instructions to implement this test"
     end
   end
 end
