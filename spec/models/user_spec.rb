@@ -243,7 +243,7 @@ RSpec.describe User, type: :model do
     end
 
     it "can get his followers" do
-      pending "Awaiting instructions to implement this test")
+      pending "Awaiting instructions to implement this test"
     end
 
     it "can get his followings" do
