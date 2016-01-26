@@ -40,6 +40,11 @@ gem 'jwt'
 gem 'devise'
 gem 'rack-cors'
 
+group :test do
+  # Code coverage gem
+  gem 'simplecov', :require => false
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
