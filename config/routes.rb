@@ -8,6 +8,13 @@ Rails.application.routes.draw do
         match 'session' => 'sessions#create', :via => :post
         match 'session' => 'session#destroy', :via => :delete
       end
+
+      namespace :me do
+        root to: "user#index"
+        put "/", to: "user#update"
+        delete "/", to: "user#destroy"
+        resources :projects
+      end
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

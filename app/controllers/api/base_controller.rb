@@ -47,7 +47,6 @@ class Api::BaseController < ActionController::Base
     auth_header = request.headers['Authorization'] and @auth_token = auth_header.split(' ').last
     if @auth_token.to_s.empty?
       @auth_token = params[:token]
-      return render_unauthorized if @auth_token.to_s.empty?
     end
     @auth_token
   end
