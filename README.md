@@ -2,6 +2,8 @@
 
 This is the API of the project Metropolis.watch
 
+[![CircleCI](https://circleci.com/gh/ecolehetic/metropolis/tree/master.svg?style=svg&circle-token=1ac6c35bd7aad3e49cb3f21bc5e36d7f4105c059)](https://circleci.com/gh/ecolehetic/metropolis/tree/master)
+
 ### DB Scheme
 ### PostgreSQL
 
