@@ -1,4 +1,4 @@
-class Api::V1::RegistrationsController < Api::BaseController
+class Api::V1::RegistrationsController < ApplicationController
   skip_before_filter :authenticate_user_from_token!
 
   # POST /api/register

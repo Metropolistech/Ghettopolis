@@ -1,4 +1,4 @@
-class Api::V1::Me::UserController < Api::BaseController
+class Api::V1::Me::UserController < ApplicationController
   def index
     @user = current_user
   end

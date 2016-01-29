@@ -1,6 +1,6 @@
 require 'json_web_token'
 
-class Api::BaseController < ActionController::Base
+class Api::V1::BaseController < ActionController::Base
   include ActionController::ImplicitRender
   respond_to :json
 

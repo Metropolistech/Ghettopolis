@@ -1,4 +1,4 @@
-class Api::V1::SessionsController < Api::BaseController
+class Api::V1::SessionsController < ApplicationController
   skip_before_filter :authenticate_user_from_token!
   before_filter :ensure_params_exist
 

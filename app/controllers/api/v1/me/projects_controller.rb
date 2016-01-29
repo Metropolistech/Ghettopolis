@@ -1,4 +1,4 @@
-class Api::V1::Me::ProjectsController < Api::BaseController
+class Api::V1::Me::ProjectsController < ApplicationController
   # GET /me/projects
   def index
     @projects = current_user.projects
