@@ -24,7 +24,7 @@ class Api::BaseController < ActionController::Base
   alias_method :devise_user_signed_in?, :user_signed_in?
 
   def authenticate_user_from_token!
-    if claims and user = User.find(claims['user_id']) and user.email == claims['user_email']
+    if claims and user = User.find(claims['user_id'])
       @user = user
     else
       return render_unauthorized
