@@ -13,7 +13,11 @@ Rails.application.routes.draw do
         root to: "user#index"
         put "/", to: "user#update"
         delete "/", to: "user#destroy"
-        resources :projects
+        resources :projects, except: [:new, :edit]
+      end
+
+      resources :users, except: [:new, :edit] do
+        resources :projects, except: [:new, :edit]
       end
     end
   end
