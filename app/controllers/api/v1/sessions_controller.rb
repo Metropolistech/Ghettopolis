@@ -4,7 +4,7 @@ class Api::V1::SessionsController < ApplicationController
 
   # POST /api/session
   def create
-    if token_params
+    if claims
       return open_session
     else
       return create_session
@@ -30,18 +30,12 @@ class Api::V1::SessionsController < ApplicationController
       nil
   end
 
-  def token_params
-    params.require(:token)
-    rescue
-      nil
-  end
-
-  def ensure_user_params_exist
+  def user_params_blank?
     return user_params.blank? || user_params[:email].blank? || user_params[:password].blank?
   end
 
   def ensure_params_exist
-    if ensure_user_params_exist && token_params.blank?
+    if user_params_blank? && claims.blank?
       return render json: { errors: { message: "Missing parameters" } }, status: 404
     end
   end
