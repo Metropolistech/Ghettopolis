@@ -16,9 +16,8 @@ Rails.application.routes.draw do
         resources :projects, except: [:new, :edit]
       end
 
-      resources :users, except: [:new, :edit] do
-        resources :projects, except: [:new, :edit]
-      end
+      resources :users, except: [:new, :edit]
+      resources :projects, except: [:new, :edit]
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.
