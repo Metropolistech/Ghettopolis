@@ -10,11 +10,9 @@ class ApplicationController < Api::V1::BaseController
     # If it's an error and status is default 200, force status to 400
     if status == 200 and error == true then status = 400 end
 
-    if data.blank?
-      return send_status_res(status)
-    else
-      return error ? send_err(data, status) : send_res(data, status)
-    end
+    return send_status_res(status) if data.blank?
+
+    error ? send_err(data, status) : send_res(data, status)
   end
 
   private
