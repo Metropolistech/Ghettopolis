@@ -7,6 +7,9 @@ class ApplicationController < Api::V1::BaseController
   @@responses = YAML.load(File.read(Rails.root.join('lib/yml', 'server_responses.yml')))
 
   def res_send(data: {}, status: 200, error: false)
+    # If it's an error and status is default 200, force status to 400
+    if status == 200 and error == true then status = 400 end
+
     if data.blank?
       return send_status_res(status)
     else
