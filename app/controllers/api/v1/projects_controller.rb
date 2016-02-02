@@ -15,24 +15,26 @@ class Api::V1::ProjectsController < ApplicationController
   # PUT /api/v1/projects/:id
   def update
     if projects_params
-      @project = Project.find_by_id(params[:id])
+      @project = current_user.update_project!(data: projects_params, project_id: params[:id])
+
       if @project
-        return res_send data: @project if @project.update(projects_params)
-      else
-        return res_send status: 204
+        return res_send data: @project if @project.errors.blank?
+        return res_send data: @project.errors.messages, error: true
       end
+
+      return res_send status: 204
     end
-    res_send data:[updateRecord: "Parameters are missing or malformed."], error: true
+    res_send data:[updateRecord: "Missing required project parameter"], error: true
   end
 
   # POST /api/v1/projects
   def create
     if projects_params
       @project = current_user.create_project!(data: projects_params)
-      return res_send data: @project, status: 201 if @project
+      return res_send data: @project, status: 201 if @project.errors.blank?
+      return res_send data: @project.errors.messages, error: true
     end
-
-    res_send data:[createRecord: "Parameters are missing or malformed"], error: true
+    res_send data:[createRecord: "Missing required project parameter"], error: true
   end
 
   private

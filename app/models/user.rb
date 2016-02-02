@@ -14,13 +14,15 @@ class User < ActiveRecord::Base
 
   def create_project!(data: {})
     project = Project.new(data.merge(author_id: self.id))
-    project.save ? project : false
+    project.save
+    project
   end
 
   def update_project!(project_id: nil, data: {})
       project = self.projects.find(project_id)
       project.attributes = data
-      project.save ? project : false
+      project.save
+      project
     rescue
       false
   end
