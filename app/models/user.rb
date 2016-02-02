@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
   end
 
   def unfollow_project!(project_id)
-      follow = FollowProject.find_by_project_id(project_id)
+      follow = self.follow_projects.find_by_project_id(project_id)
       return follow.destroy ? true : false if follow
       false
   end
