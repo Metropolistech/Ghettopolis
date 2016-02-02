@@ -9,11 +9,7 @@ class Api::V1::UsersController < ApplicationController
   # GET /api/v1/users/:id
   def show
     @user = User.find_by_id(params[:id])
-    if @user
-      res_send(data: @user.as_json(incude: :projects))
-    else
-      res_send(status: 204)
-    end
+    @user ? res_send(data: @user) : res_send(status: 204)
   end
 
   # PUT /api/v1/users/:id
