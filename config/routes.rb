@@ -17,7 +17,10 @@ Rails.application.routes.draw do
       end
 
       resources :users, except: [:new, :edit, :create]
-      resources :projects, except: [:new, :edit]
+      resources :projects, except: [:new, :edit] do
+        post :follow
+        post :unfollow
+      end
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.
