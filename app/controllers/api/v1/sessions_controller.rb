@@ -13,9 +13,12 @@ class Api::V1::SessionsController < ApplicationController
 
   def create_session
     @user = User.find_for_database_authentication(email: user_params[:email])
+
     return invalid_user unless @user
     return invalid_login_attempt unless @user.valid_password?(user_params[:password])
+
     @auth_token = JsonWebToken.encode(JsonWebToken.create_user_payload(@user))
+    res_send data: { user: @user, token: @auth_token }, status: 201
   end
 
   def open_session
@@ -36,15 +39,15 @@ class Api::V1::SessionsController < ApplicationController
 
   def ensure_params_exist
     if user_params_blank? && claims.blank?
-      return render json: { errors: { message: "Missing parameters" } }, status: 404
+      res_send data: [createSession: "Missing required user parameter"], error: true
     end
   end
 
   def invalid_login_attempt
-    render_unauthorized errors: { password: "Mot de passe erroné" }
+    render_unauthorized [password: "Mot de passe erroné"]
   end
 
   def invalid_user
-    render_unauthorized errors: { email: "Utilisateur introuvable" }
+    render_unauthorized [email: "Utilisateur introuvable"]
   end
 end

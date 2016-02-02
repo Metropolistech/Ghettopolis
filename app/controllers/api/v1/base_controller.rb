@@ -39,8 +39,8 @@ class Api::V1::BaseController < ActionController::Base
     end
   end
 
-  def render_unauthorized(payload = { errors: { message: "You are not authorized perform this action." } })
-    render json: { status: 401 }.merge(payload), status: 401
+  def render_unauthorized(payload = [Authorization: "You are not authorized perform this action."])
+    res_send data: payload, status: 401, error: true
   end
 
   def token_from_request

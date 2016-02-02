@@ -3,9 +3,15 @@ class Api::V1::RegistrationsController < ApplicationController
 
   # POST /api/register
   def create
-    return render json: { errors: { message: "Missing parameters" } }, status: 404 if user_params.blank?
+    return res_send data: [createRegistration: "Missing required user parameter"], error: true if user_params.blank?
+
     @user = User.new(user_params)
-    @auth_token = JsonWebToken.encode(JsonWebToken.create_user_payload(@user)) if @user.save
+    if @user.save
+      @auth_token = JsonWebToken.encode(JsonWebToken.create_user_payload(@user))
+      return res_send data: { user: @user, token: @auth_token }, status: 201
+    end
+
+    res_send data: @user.errors.messages, error: true
   end
 
   private

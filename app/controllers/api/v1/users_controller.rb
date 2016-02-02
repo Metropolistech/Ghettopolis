@@ -3,7 +3,7 @@ class Api::V1::UsersController < ApplicationController
 
   # GET /api/v1/users
   def index
-    res_send(data: User.all)
+    res_send data: User.all
   end
 
   # GET /api/v1/users/:id
@@ -16,11 +16,15 @@ class Api::V1::UsersController < ApplicationController
   def update
     if users_params
       @user = User.find_by_id(params[:id])
-      return res_send(data: @user) if @user.update(users_params)
+      if @user
+        return res_send data: @user if @user.update(users_params)
+      else
+        return res_send status: 204
+      end 
     else
-      return res_send(data:[updateRecord: "Parameters are missing"], status: 400, error: true)
+      return res_send data:[updateRecord: "Parameters are missing"], error: true
     end
-    res_send(data: @user.errors.messages, status: 400, error: true)
+    res_send data: @user.errors.messages, error: true
   end
 
   def destroy
