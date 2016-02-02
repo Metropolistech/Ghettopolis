@@ -1,5 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe Project, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "validation" do
+
+    user = create_user
+
+    describe "require a unique title" do
+
+    end
+
+    describe "require author_id" do
+
+    end
+
+    describe "require a status include in [draft, competition, production, released]" do
+      
+    end
+  end
 end
