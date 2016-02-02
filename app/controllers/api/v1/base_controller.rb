@@ -25,7 +25,7 @@ class Api::V1::BaseController < ActionController::Base
 
   def authenticate_user_from_token!
     if claims and user = User.find(claims['user_id'])
-      @user = user
+      res_send(data: { user: user, token: @auth_token }, status: 201)
     else
       return render_unauthorized
     end
