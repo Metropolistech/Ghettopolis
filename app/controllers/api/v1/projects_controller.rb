@@ -42,6 +42,16 @@ class Api::V1::ProjectsController < ApplicationController
 
   end
 
+  # POST /api/v1/projects/:project_id/follow
+  def follow
+    current_user.follow_project!(params[:project_id]) ? res_send : res_send(status: 204)
+  end
+
+  # POST /api/v1/projects/:project_id/unfollow
+  def unfollow
+    current_user.unfollow_project!(params[:project_id]) ? res_send : res_send(status: 204)
+  end
+
   private
 
   def projects_params
