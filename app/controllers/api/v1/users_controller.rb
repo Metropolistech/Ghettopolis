@@ -9,7 +9,11 @@ class Api::V1::UsersController < ApplicationController
   # GET /api/v1/users/:id
   def show
     @user = User.find_by_id(params[:id])
-    @user ? res_send(data: @user) : res_send(status: 204)
+    if @user
+      attributes = params[:populate].blank? ? [] : params[:populate].split(",")
+      return res_send(data: @user.populate(attributes))
+    end
+    res_send(status: 204)
   end
 
   # PUT /api/v1/users/:id
@@ -20,7 +24,7 @@ class Api::V1::UsersController < ApplicationController
         return res_send data: @user if @user.update(users_params)
       else
         return res_send status: 204
-      end 
+      end
     else
       return res_send data:[updateRecord: "Parameters are missing"], error: true
     end
@@ -33,13 +37,19 @@ class Api::V1::UsersController < ApplicationController
 
   private
 
+  def populate(attributes)
+    to_populate = []
+    attributes.split(",").each do |attr|
+      if @user.respond_to?(attr)
+        to_populate.push(attr)
+      end
+    end
+    @user.as_json(include: to_populate)
+  end
+
   def users_params
       params.require(:user).permit(:username, :email, :password, :password_confirmation, :is_admin)
     rescue
       nil
-  end
-
-  def to_populate
-    !params[:populate].blank?
   end
 end
