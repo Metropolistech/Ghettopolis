@@ -10,8 +10,8 @@ RSpec.describe Api::V1::RegistrationsController, type: :controller do
         post :create, format: :json, :data => nil
       end
 
-      it "return 404" do
-        expect(response.status).to eq(404)
+      it "return 400" do
+        expect(response.status).to eq(400)
         expect(JSON(response.body)['errors'].blank?).to eq(false)
       end
     end
@@ -21,9 +21,9 @@ RSpec.describe Api::V1::RegistrationsController, type: :controller do
         post :create, format: :json, :user => { username: "DonutLover", email: "homer@contact.com", password: "KillBart", password_confirmation: "nothing" }
       end
 
-      it "return response status 401 and errors object" do
-        expect(response.status).to eq(200)
-        expect(JSON(response.body)['status']).to eq(401)
+      it "return response status 400 and errors object" do
+        expect(response.status).to eq(400)
+        expect(JSON(response.body)['status']).to eq(400)
         expect(JSON(response.body)['errors'].blank?).to eq(false)
       end
     end
@@ -37,7 +37,7 @@ RSpec.describe Api::V1::RegistrationsController, type: :controller do
         response_data = JSON(response.body)
         user = response_data['data']['user']
 
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(201)
         expect(response_data['status']).to eq(201)
 
         expect(user.blank?).to eq(false)
