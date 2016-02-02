@@ -93,7 +93,7 @@ RSpec.describe User, type: :model do
     context "when title is setted" do
       it "return the project object" do
         user = create_user
-        data = { title: "new project" }
+        data = { title: "new project", youtube_id: "1" }
         expect(user.create_project!(data: data)).to be_a Project
         expect(user.projects.count).to eq(1)
       end
@@ -117,7 +117,7 @@ RSpec.describe User, type: :model do
           email: "marge@contact.com"
         })
 
-        user_a.create_project!(data: { title: "hello" })
+        user_a.create_project!(data: { title: "hello", youtube_id: "1" })
         project = user_b.create_project!(data: { title: "hello" })
 
         expect(project.errors.blank?).to eq(false)
@@ -133,7 +133,7 @@ RSpec.describe User, type: :model do
 
       before do
         user = create_user
-        project = user.create_project!(data: { title: "new project" })
+        project = user.create_project!(data: { title: "new project", youtube_id: "1" })
       end
 
       it "return the updated project" do
@@ -153,7 +153,7 @@ RSpec.describe User, type: :model do
       before do
         user = create_user
         user_b = create_user(data: { username: "MargeSimps", email: "marge@contact.com" })
-        project = user_b.create_project!(data: { title: "new project" })
+        project = user_b.create_project!(data: { title: "new project", youtube_id: "1" })
       end
 
       it "return false to say that the project were not updated" do
@@ -166,7 +166,7 @@ RSpec.describe User, type: :model do
   describe "#delete_project" do
     it "can delete a project" do
       user = create_user
-      project = user.create_project!(data: { title: "new project" })
+      project = user.create_project!(data: { title: "new project", youtube_id: "1" })
       expect(user.projects.count).to eq(1)
 
       user.delete_project!(project.id)
@@ -177,7 +177,7 @@ RSpec.describe User, type: :model do
       user_a = create_user
       user_b = create_user(data: { username: "MargeSimps", email: "marge@contact.com" })
 
-      project_b = user_b.create_project!(data: { title: "hello" })
+      project_b = user_b.create_project!(data: { title: "hello", youtube_id: "1" })
 
       expect(user_a.delete_project!(project_b.id)).to eq(false)
     end
