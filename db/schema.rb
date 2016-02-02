@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160202162814) do
+ActiveRecord::Schema.define(version: 20160202214354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,15 +38,15 @@ ActiveRecord::Schema.define(version: 20160202162814) do
   add_index "backstage_posts", ["image_id"], name: "index_backstage_posts_on_image_id", using: :btree
   add_index "backstage_posts", ["project_id"], name: "index_backstage_posts_on_project_id", using: :btree
 
-  create_table "follows", force: :cascade do |t|
+  create_table "follow_projects", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "follows", ["project_id"], name: "index_follows_on_project_id", using: :btree
-  add_index "follows", ["user_id"], name: "index_follows_on_user_id", using: :btree
+  add_index "follow_projects", ["project_id"], name: "index_follow_projects_on_project_id", using: :btree
+  add_index "follow_projects", ["user_id"], name: "index_follow_projects_on_user_id", using: :btree
 
   create_table "images", force: :cascade do |t|
     t.string   "url"
@@ -134,8 +134,8 @@ ActiveRecord::Schema.define(version: 20160202162814) do
   add_foreign_key "backstage_post_accesses", "users"
   add_foreign_key "backstage_posts", "images"
   add_foreign_key "backstage_posts", "projects"
-  add_foreign_key "follows", "projects"
-  add_foreign_key "follows", "users"
+  add_foreign_key "follow_projects", "projects"
+  add_foreign_key "follow_projects", "users"
   add_foreign_key "notifications", "backstage_posts"
   add_foreign_key "notifications", "projects"
   add_foreign_key "notifications", "users"
