@@ -37,6 +37,11 @@ class Api::V1::ProjectsController < ApplicationController
     res_send data:[createRecord: "Missing required project parameter"], error: true
   end
 
+  # Only admin can access to this route
+  def destroy
+
+  end
+
   private
 
   def projects_params
@@ -44,16 +49,11 @@ class Api::V1::ProjectsController < ApplicationController
         :title,
         :youtube_id,
         :room_max,
-        :in_competition,
-        :is_released,
+        :description,
+        :status,
         :cover_id
       )
     rescue
       nil
-  end
-
-  # Only admin can access to this route
-  def destroy
-
   end
 end
