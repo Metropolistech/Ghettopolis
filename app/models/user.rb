@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :projects, foreign_key: "author_id", class_name: "Project"
+  has_many :followed_projects, through: :follow_projects
 
   belongs_to :avatar, :class_name => 'Image', :foreign_key => 'image_id'
 
@@ -30,6 +31,19 @@ class User < ActiveRecord::Base
   def delete_project!(project_id)
       project = self.projects.find(project_id)
       project.destroy
+    rescue
+      false
+  end
+
+  def follow_project!(project_id)
+    follow = FollowProject.new(user: self, project_id: project_id)
+    follow.save ? true : false
+  end
+
+  def unfollow_project!(project_id)
+      follow = self.followed_projects.find(project_id)
+      follow.destroy
+      follow.destroyed? ? true : false
     rescue
       false
   end
