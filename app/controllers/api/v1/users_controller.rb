@@ -9,10 +9,10 @@ class Api::V1::UsersController < ApplicationController
   # GET /api/v1/users/:id
   def show
     @user = User.find_by_id(params[:id])
-    if @user
-      attributes = params[:populate].blank? ? [] : params[:populate].split(",")
-      return res_send(data: @user.populate(attributes))
-    end
+
+    attributes = params[:populate].blank? ? [] : params[:populate].split(",")
+    return res_send data: @user.populate(attributes) if @user
+
     res_send(status: 204)
   end
 
@@ -21,23 +21,16 @@ class Api::V1::UsersController < ApplicationController
     if users_params
       @user = User.find_by_id(params[:id])
 
-      return res_send(status: 401) if @user.id != current_user.id
+      return res_send status: 204 if @user.blank?
+      return res_send status: 401  if @user.id != current_user.id
 
-
+      if @user.update(users_params)
+        return res_send data: @user
+      else
+        return res_send data: @user.errors.messages, error: true
+      end
     end
-
     res_send data:[updateRecord: "Missing required user parameter"], error: true
-    # if users_params
-    #   @user = User.find_by_id(params[:id])
-    #   if @user
-    #     return res_send data: @user if @user.update(users_params)
-    #   else
-    #     return res_send status: 204
-    #   end
-    # else
-    #   return res_send data:[updateRecord: "Parameters are missing"], error: true
-    # end
-    # res_send data: @user.errors.messages, error: true
   end
 
   def destroy
