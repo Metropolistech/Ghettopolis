@@ -100,15 +100,16 @@ RSpec.describe User, type: :model do
     end
 
     context "when title is not setted" do
-      it "return false to say that project is not created" do
+      it "return project with errors" do
         user = create_user
-        expect(user.create_project!).to eq(false)
+        project = user.create_project!
+        expect(project.errors.blank?).to eq(false)
         expect(user.projects.count).to eq(0)
       end
     end
 
     context "when title is already taken" do
-      it "return false to say that project is not created" do
+      it "return project with errors" do
         user_a = create_user
 
         user_b = create_user(data: {
@@ -117,8 +118,9 @@ RSpec.describe User, type: :model do
         })
 
         user_a.create_project!(data: { title: "hello" })
+        project = user_b.create_project!(data: { title: "hello" })
 
-        expect(user_b.create_project!(data: { title: "hello" })).to eq(false)
+        expect(project.errors.blank?).to eq(false)
         expect(user_b.projects.count).to eq(0)
       end
     end
