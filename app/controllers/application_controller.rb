@@ -31,7 +31,11 @@ class ApplicationController < Api::V1::BaseController
   # ([{type: message}, ...]) => { type: message, ...}
   def sanitize_errors(data: [])
     data.inject({}) do |errors, err|
-      errors[err.keys.first] = err.values.first
+      if err.kind_of?(Array)
+        errors[err.first] = err.last.first
+      else
+        errors[err.keys.first] = err.values.first
+      end
       errors
     end
   end
