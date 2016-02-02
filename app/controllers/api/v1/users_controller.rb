@@ -20,15 +20,24 @@ class Api::V1::UsersController < ApplicationController
   def update
     if users_params
       @user = User.find_by_id(params[:id])
-      if @user
-        return res_send data: @user if @user.update(users_params)
-      else
-        return res_send status: 204
-      end
-    else
-      return res_send data:[updateRecord: "Parameters are missing"], error: true
+
+      return res_send(status: 401) if @user.id != current_user.id
+
+
     end
-    res_send data: @user.errors.messages, error: true
+
+    res_send data:[updateRecord: "Missing required user parameter"], error: true
+    # if users_params
+    #   @user = User.find_by_id(params[:id])
+    #   if @user
+    #     return res_send data: @user if @user.update(users_params)
+    #   else
+    #     return res_send status: 204
+    #   end
+    # else
+    #   return res_send data:[updateRecord: "Parameters are missing"], error: true
+    # end
+    # res_send data: @user.errors.messages, error: true
   end
 
   def destroy
@@ -36,16 +45,6 @@ class Api::V1::UsersController < ApplicationController
   end
 
   private
-
-  def populate(attributes)
-    to_populate = []
-    attributes.split(",").each do |attr|
-      if @user.respond_to?(attr)
-        to_populate.push(attr)
-      end
-    end
-    @user.as_json(include: to_populate)
-  end
 
   def users_params
       params.require(:user).permit(:username, :email, :password, :password_confirmation, :is_admin)
