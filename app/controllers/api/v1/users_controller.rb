@@ -18,7 +18,7 @@ class Api::V1::UsersController < ApplicationController
 
   # PUT /api/v1/users/:id
   def update
-    if update_params
+    if user_params
       @user = User.find_by_id(params[:id])
       return res_send(data: @user) if @user.update(update_params)
     else
@@ -27,8 +27,15 @@ class Api::V1::UsersController < ApplicationController
     res_send(data: @user.errors.messages, status: 400, error: true)
   end
 
+  # POST /api/v1/users
   def create
-
+    if user_params
+      @user = User.new(user_params)
+      return res_send(data: @user, status: 201) if @user.save
+    else
+      return res_send(data:[createRecord: "Parameters are missing"], status: 400, error: true)
+    end
+    res_send(data: @user.errors.messages, status: 400, error: true)
   end
 
   def destroy
@@ -37,7 +44,7 @@ class Api::V1::UsersController < ApplicationController
 
   private
 
-  def update_params
+  def user_params
       params.require(:user).permit(:username, :email, :password, :password_confirmation, :is_admin)
     rescue
       nil
