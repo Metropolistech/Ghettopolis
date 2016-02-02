@@ -4,8 +4,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  has_many :follow_projects
+  has_many :followed_projects, through: :follow_projects, source: :project
   has_many :projects, foreign_key: "author_id", class_name: "Project"
-  has_many :followed_projects, through: :follow_projects
 
   belongs_to :avatar, :class_name => 'Image', :foreign_key => 'image_id'
 
@@ -41,10 +42,8 @@ class User < ActiveRecord::Base
   end
 
   def unfollow_project!(project_id)
-      follow = self.followed_projects.find(project_id)
-      follow.destroy
-      follow.destroyed? ? true : false
-    rescue
+      follow = FollowProject.find_by_project_id(project_id)
+      return follow.destroy ? true : false if follow
       false
   end
 

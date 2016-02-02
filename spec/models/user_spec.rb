@@ -89,7 +89,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "#create_project" do
+  describe "#create_project!" do
     context "when title is setted" do
       it "return the project object" do
         user = create_user
@@ -126,7 +126,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "#update_project" do
+  describe "#update_project!" do
     context "when user want update his project" do
       user = nil
       project = nil
@@ -163,7 +163,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "#delete_project" do
+  describe "#delete_project!" do
     it "can delete a project" do
       user = create_user
       project = user.create_project!(data: { title: "new project", youtube_id: "1" })
@@ -180,6 +180,56 @@ RSpec.describe User, type: :model do
       project_b = user_b.create_project!(data: { title: "hello", youtube_id: "1" })
 
       expect(user_a.delete_project!(project_b.id)).to eq(false)
+    end
+  end
+
+  describe "#follow_project!" do
+    user_a = user_b = project = nil
+
+    before(:each) do
+      user_a = create_user
+      user_b = create_user(data: {
+        username: "MargeSimps",
+        email: "marge@conact.com"
+      })
+
+      project = user_b.create_project!(data: { title: "Marge's project", youtube_id: "1" })
+    end
+    it "can follow a project" do
+      expect(user_a.follow_project!(project.id)).to eq(true)
+      expect(user_a.followed_projects.count).to eq(1)
+    end
+
+    it "cannot follow a non existing project" do
+      expect(user_a.follow_project!(10000)).to eq(false)
+      expect(user_a.followed_projects.count).to eq(0)
+    end
+  end
+
+  describe "#unfollow_project!" do
+    user_a = user_b = project = nil
+
+    before(:each) do
+      user_a = create_user
+      user_b = create_user(data: {
+        username: "MargeSimps",
+        email: "marge@conact.com"
+      })
+
+      project = user_b.create_project!(data: { title: "Marge's project", youtube_id: "1" })
+      user_a.follow_project!(project.id)
+    end
+
+    it "can unfollow a project" do
+      expect(user_a.followed_projects.count).to eq(1)
+
+      expect(user_a.unfollow_project!(project.id)).to eq(true)
+      expect(user_a.followed_projects.count).to eq(0)
+    end
+
+    it "cannot unfollow a non existing project" do
+      expect(user_a.unfollow_project!(30)).to eq(false)
+      expect(user_a.followed_projects.count).to eq(1)
     end
   end
 
@@ -208,26 +258,6 @@ RSpec.describe User, type: :model do
 
     xit "can get all projects" do
     end
-
-    # describe "#follow_project & #unfollow_project" do
-    #   user_a = create_user
-    #   user_b = create_user(data: {
-    #     username: "MargeSimps",
-    #     email: "marge@contact.com"
-    #   })
-    #
-    #   project = user_b.create_project!(data: { title: "Marge's project" })
-    #
-    #   it "can follow a project" do
-    #     user_a.follow_project!(project.id)
-    #     expect(user_a.followed_projects.count).to eq(1)
-    #   end
-    #
-    #   it "can unfollow a project" do
-    #     user_a.unfollow_project!(project.id)
-    #     expect(user_a.followed_projects.count).to eq(0)
-    #   end
-    # end
   end
 
   describe "self methods" do

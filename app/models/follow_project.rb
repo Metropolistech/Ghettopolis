@@ -1,4 +1,6 @@
 class FollowProject < ActiveRecord::Base
-  belongs_to :users
-  belongs_to :projects
+  belongs_to :user
+  belongs_to :project
+
+  validates :user, :project, presence: true
 end
