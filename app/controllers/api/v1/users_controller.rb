@@ -1,4 +1,6 @@
 class Api::V1::UsersController < ApplicationController
+  skip_before_filter :authenticate_user_from_token!, only: [:index, :show]
+  
   # GET /api/v1/users
   def index
     res_send(data: User.all)
@@ -6,21 +8,29 @@ class Api::V1::UsersController < ApplicationController
 
   # GET /api/v1/users/:id
   def show
-    res_send(data: User.find(params[:id]))
+    @user = User.find_by_id(params[:id])
+    if @user
+      res_send(data: @user.as_json(incude: :projects))
+    else
+      res_send(status: 204)
+    end
   end
 
-  # Only admin can access to this route
   def update
 
   end
 
-  # Only admin can access to this route
   def create
 
   end
 
-  # Only admin can access to this route
   def destroy
 
+  end
+
+  private
+
+  def to_populate
+    !params[:populate].blank?
   end
 end
