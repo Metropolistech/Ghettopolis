@@ -23,6 +23,7 @@ class Api::V1::SessionsController < ApplicationController
 
   def open_session
     authenticate_user_from_token!
+    res_send data: { user: @user, token: @auth_token }, status: 201
   end
 
   private
