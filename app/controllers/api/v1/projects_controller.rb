@@ -16,11 +16,13 @@ class Api::V1::ProjectsController < ApplicationController
   def update
     if projects_params
       @project = Project.find_by_id(params[:id])
-      return res_send(data: @project) if @project.update
-    else
-      return res_send(data:[updateRecord: "Parameters are missing"], status: 400, error: true)
+      if @project
+        return res_send(data: @project) if @project.update(projects_params)
+      else
+        return res_send(data:[updateRecord: "Cannot update. Ressource does not exist."], status: 400, error: true)
+      end
     end
-    res_send(data: @project.errors.messages, status: 400, error: true)
+    res_send(data:[updateRecord: "Parameters are missing or malformed."], status: 400, error: true)
   end
 
   # POST /api/v1/projects
