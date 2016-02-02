@@ -3,23 +3,49 @@ class Api::V1::ProjectsController < ApplicationController
 
   # GET /api/v1/projects
   def index
-    puts Project.all
     res_send(data: Project.all)
   end
 
   # GET /api/v1/projects/:id
   def show
-    res_send(data: Project.find(params[:id]))
+    @project = Project.find_by_id(params[:id])
+    @project ? res_send(data: @project) : res_send(status: 204)
   end
 
-  # Only admin can access to this route
+  # PUT /api/v1/projects/:id
   def update
-
+    if projects_params
+      @project = Project.find_by_id(params[:id])
+      return res_send(data: @project) if @project.update
+    else
+      return res_send(data:[updateRecord: "Parameters are missing"], status: 400, error: true)
+    end
+    res_send(data: @project.errors.messages, status: 400, error: true)
   end
 
-  # Only admin can access to this route
+  # POST /api/v1/projects
   def create
+    if projects_params
+      @project = current_user.create_project!(data: projects_params)
+      return res_send(data: @project) if @project
+    end
 
+    res_send(data:[createRecord: "Parameters are missing or malformed"], status: 400, error: true)
+  end
+
+  private
+
+  def projects_params
+      params.require(:project).permit(
+        :title,
+        :youtube_id,
+        :room_max,
+        :in_competition,
+        :is_released,
+        :cover_id
+      )
+    rescue
+      nil
   end
 
   # Only admin can access to this route
