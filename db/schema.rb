@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160202214354) do
+ActiveRecord::Schema.define(version: 20160203132401) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,9 +86,11 @@ ActiveRecord::Schema.define(version: 20160202214354) do
     t.integer  "cover_id"
     t.string   "status",      default: "draft"
     t.text     "description"
+    t.jsonb    "comments",    default: {},      null: false
   end
 
   add_index "projects", ["author_id"], name: "index_projects_on_author_id", using: :btree
+  add_index "projects", ["comments"], name: "index_projects_on_comments", using: :gin
 
   create_table "team_role_types", force: :cascade do |t|
     t.string   "name"
