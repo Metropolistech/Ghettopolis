@@ -48,12 +48,16 @@ class Api::V1::ProjectsController < ApplicationController
 
   # POST /api/v1/projects/:project_id/follow
   def follow
-    current_user.follow_project!(params[:project_id]) ? res_send : res_send(status: 204)
+    _id = params[:project_id]
+    return res_send status: 204 unless current_user.follow_project!(_id)
+    res_send data: Project.find_by_id(_id).populate(['followers'])
   end
 
   # POST /api/v1/projects/:project_id/unfollow
   def unfollow
-    current_user.unfollow_project!(params[:project_id]) ? res_send : res_send(status: 204)
+    _id = params[:project_id]
+    current_user.unfollow_project!(_id)
+    res_send data: Project.find_by_id(_id).populate(['followers'])
   end
 
   private
