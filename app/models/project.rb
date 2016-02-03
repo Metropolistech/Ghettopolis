@@ -11,4 +11,15 @@ class Project < ActiveRecord::Base
   validates :title, :youtube_id, presence: true, uniqueness: true
   validates :author_id, presence: true
   validates :status, inclusion: { in: ["draft", "competition", "production", "released"] }
+
+  def as_json(options={})
+    result = super
+    result[:comments] = format_comments
+  end
+
+  private
+
+  def format_comments
+    self.comments.values
+  end
 end
