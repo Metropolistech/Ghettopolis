@@ -10,6 +10,12 @@ module CommentsConcern
     comment
   end
 
+  def update_comment(comment: nil, data: {})
+    return false unless comment or !data.blank?
+    comment["content"] = data[:content]
+    comment
+  end
+
   private
 
   def initialize_comment

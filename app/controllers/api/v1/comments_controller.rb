@@ -1,9 +1,9 @@
 class Api::V1::CommentsController < ApplicationController
   include CommentsConcern
 
-  def create
-    return res_send error: true unless required_params_exist
+  before_action :check_params, except: :destroy
 
+  def create
     project = Project.find_by_id(params[:project_id])
     return res_send status: 204 unless project
 
@@ -15,7 +15,16 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def update
+    project = Project.find_by_id(params[:project_id])
+    return res_send status: 204 unless project
 
+    _id = params[:id]
+
+    comment = update_comment comment: project.comments[_id], data: required_params_exist
+    return res_send error: true unless comment
+
+    project.comments[_id] = comment
+    project.save ? res_send(data: project) : res_send(data: project.errors.messages, error: true)
   end
 
   def destroy
@@ -28,5 +37,9 @@ class Api::V1::CommentsController < ApplicationController
       params.require(:comment).permit(:content)
     rescue
       nil
+  end
+
+  def check_params
+    res_send error: true unless required_params_exist
   end
 end
