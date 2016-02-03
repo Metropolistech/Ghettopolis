@@ -1,5 +1,10 @@
+require 'serializers/hash_serializer'
+
 class Project < ActiveRecord::Base
   include PopulateConcern
+
+  serialize :comments, HashSerializer
+
   has_many :follow_projects
   has_many :followers, through: :follow_projects, source: :user
 
