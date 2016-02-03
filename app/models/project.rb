@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-
+  include PopulateConcern
   has_many :follow_projects
   has_many :followers, through: :follow_projects, source: :user
 

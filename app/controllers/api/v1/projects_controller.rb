@@ -9,7 +9,11 @@ class Api::V1::ProjectsController < ApplicationController
   # GET /api/v1/projects/:id
   def show
     @project = Project.find_by_id(params[:id])
-    @project ? res_send(data: @project) : res_send(status: 204)
+
+    attributes = params[:populate].blank? ? [] : params[:populate].split(",")
+    return res_send data: @project.populate(attributes) if @project
+
+    res_send(status: 204)
   end
 
   # PUT /api/v1/projects/:id
