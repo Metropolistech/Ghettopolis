@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  include PopulateConcern
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -45,17 +46,5 @@ class User < ActiveRecord::Base
       follow = self.follow_projects.find_by_project_id(project_id)
       return follow.destroy ? true : false if follow
       false
-  end
-
-  # ([String, ...]) => {}
-  def populate(attributes)
-    return self if attributes.blank?
-
-    to_populate = []
-    attributes.each do |attr|
-      to_populate.push(attr) if self.respond_to?(attr)
-    end
-
-    to_populate.blank? ? self : self.as_json(include: to_populate)
   end
 end
