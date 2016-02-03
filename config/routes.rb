@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       resources :projects, except: [:new, :edit] do
         post :follow
         post :unfollow
+        resources :comments, only: [:create, :update, :destroy]
       end
     end
   end
