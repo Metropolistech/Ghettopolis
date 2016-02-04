@@ -1,5 +1,3 @@
-require 'serializers/comment_serializer'
-
 module CommentsConcern
 
   extend ActiveSupport::Concern
@@ -21,7 +19,7 @@ module CommentsConcern
   def update_comment(comment: nil, data: {})
     return false unless comment or !data.blank?
     comment["content"] = data[:content]
-    hash[:updated_at] = Time.new
+    comment[:updated_at] = Time.new
     comment
   end
 
