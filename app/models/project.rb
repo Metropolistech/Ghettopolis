@@ -23,6 +23,12 @@ class Project < ActiveRecord::Base
     self.followers.count
   end
 
+  def serializable_hash(options = nil)
+    result = super
+    result[:comments] = format_comments
+    result
+  end
+
   def as_json(options={})
     result = super
 
