@@ -16,7 +16,7 @@ Rails.application.routes.draw do
         resources :projects, except: [:new, :edit]
       end
 
-      get 'ladder' => 'projects#ladder'
+      get "projects/ladder" => "projects#ladder"
 
       resources :users, except: [:new, :edit, :create]
       resources :projects, except: [:new, :edit] do
