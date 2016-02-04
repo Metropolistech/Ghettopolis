@@ -15,11 +15,12 @@ class Project < ActiveRecord::Base
   def as_json(options={})
     result = super
     result[:comments] = format_comments
+    result
   end
 
   private
 
   def format_comments
-    self.comments.values
+    self.comments.values.sort_by { |comment| comment[:created_at]}
   end
 end
