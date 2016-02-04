@@ -19,11 +19,14 @@ class Api::V1::CommentsController < ApplicationController
     return res_send status: 204 unless project
 
     _id = params[:id]
+    comment = project.comments[_id]
 
-    comment = update_comment comment: project.comments[_id], data: required_params_exist
-    return res_send error: true unless comment
+    return res_send status: 401 if current_user.id != comment[:user][:id]
 
-    project.comments[_id] = comment
+    updated = update_comment comment: comment, data: required_params_exist
+    return res_send error: true unless updated
+
+    project.comments[_id] = updated
     project.save ? res_send(data: project) : res_send(data: project.errors.messages, error: true)
   end
 
