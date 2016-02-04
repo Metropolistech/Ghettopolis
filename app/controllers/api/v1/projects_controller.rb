@@ -60,6 +60,10 @@ class Api::V1::ProjectsController < ApplicationController
     res_send data: Project.find_by_id(_id).populate(['followers'])
   end
 
+  def ladder
+    res_send data: Project.populate_ladder.as_json({except: [:comments]})
+  end
+
   private
 
   def projects_params

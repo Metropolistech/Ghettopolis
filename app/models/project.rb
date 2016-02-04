@@ -2,6 +2,7 @@ require 'serializers/hash_serializer'
 
 class Project < ActiveRecord::Base
   include PopulateConcern
+  include LadderConcern
 
   serialize :comments, HashSerializer
 
@@ -14,9 +15,23 @@ class Project < ActiveRecord::Base
   validates :author_id, presence: true
   validates :status, inclusion: { in: ["draft", "competition", "production", "released"] }
 
+  scope :in_competion, -> { joins(:author).where(status: :competition) }
+
+  attr_accessor :followers_count
+
+  def followers_count
+    self.followers.count
+  end
+
   def as_json(options={})
     result = super
+
+    result[:followers_count] = self.followers_count
+    result[:author] = self.author
     result[:comments] = format_comments
+
+    options[:except].each { |attr| result.except!(attr)} if options.has_key?(:except)
+
     result
   end
 
