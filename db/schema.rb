@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160204133614) do
+ActiveRecord::Schema.define(version: 20160205104801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,14 +66,12 @@ ActiveRecord::Schema.define(version: 20160204133614) do
     t.integer  "user_id"
     t.integer  "notification_type_id"
     t.datetime "seen_at"
-    t.integer  "project_id"
-    t.integer  "backstage_post_id"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+    t.string   "notif_duty_type"
+    t.integer  "notif_duty_id"
   end
 
-  add_index "notifications", ["backstage_post_id"], name: "index_notifications_on_backstage_post_id", using: :btree
-  add_index "notifications", ["project_id"], name: "index_notifications_on_project_id", using: :btree
   add_index "notifications", ["user_id"], name: "index_notifications_on_user_id", using: :btree
 
   create_table "projects", force: :cascade do |t|
@@ -138,8 +136,6 @@ ActiveRecord::Schema.define(version: 20160204133614) do
   add_foreign_key "backstage_posts", "projects"
   add_foreign_key "follow_projects", "projects"
   add_foreign_key "follow_projects", "users"
-  add_foreign_key "notifications", "backstage_posts"
-  add_foreign_key "notifications", "projects"
   add_foreign_key "notifications", "users"
   add_foreign_key "team_roles", "projects"
   add_foreign_key "team_roles", "users"
