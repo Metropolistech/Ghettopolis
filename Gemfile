@@ -40,6 +40,9 @@ gem 'jwt'
 gem 'devise'
 gem 'rack-cors'
 
+# Tags
+gem 'acts-as-taggable-on', '~> 3.4'
+
 group :test do
   # Code coverage gem
   gem 'simplecov', :require => false

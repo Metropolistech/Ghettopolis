@@ -76,7 +76,8 @@ class Api::V1::ProjectsController < ApplicationController
         :room_max,
         :description,
         :status,
-        :cover_id
+        :cover_id,
+        :tag_list
       )
     rescue
       nil

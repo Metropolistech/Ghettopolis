@@ -4,6 +4,8 @@ class Project < ActiveRecord::Base
   include PopulateConcern
   include LadderConcern
 
+  acts_as_taggable
+
   serialize :comments, HashSerializer
 
   has_many :follow_projects
@@ -35,6 +37,7 @@ class Project < ActiveRecord::Base
     result[:followers_count] = self.followers_count
     result[:author] = self.author
     result[:comments] = format_comments
+    result[:tags] = self.tags
 
     options[:except].each { |attr| result.except!(attr)} if options.has_key?(:except)
 
