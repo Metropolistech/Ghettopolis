@@ -3,7 +3,7 @@ module LadderConcern
 
   class_methods do
     def populate_ladder
-      Project
+      self
         .in_competion
         .sort_by { |project| project.created_at }
         .reverse

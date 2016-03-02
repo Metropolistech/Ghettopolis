@@ -60,8 +60,11 @@ class Api::V1::ProjectsController < ApplicationController
     res_send data: Project.find_by_id(_id).populate(['followers'])
   end
 
+  # GET /api/v1/projects/ladder
   def ladder
-    res_send data: Project.populate_ladder.as_json({except: [:comments]})
+    res_send data: Project
+      .populate_ladder
+      .as_json(ladder_serialize_options)
   end
 
   private
@@ -77,5 +80,9 @@ class Api::V1::ProjectsController < ApplicationController
       )
     rescue
       nil
+  end
+
+  def ladder_serialize_options
+    { except: [:comments], include: { followers: { only: [:id, :username, :avatar] } } }
   end
 end
