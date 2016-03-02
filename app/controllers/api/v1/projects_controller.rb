@@ -49,7 +49,7 @@ class Api::V1::ProjectsController < ApplicationController
   # POST /api/v1/projects/:project_id/follow
   def follow
     _id = params[:project_id]
-    return res_send status: 204 unless current_user.follow_project!(_id)
+    current_user.follow_project!(_id)
     res_send data: Project.find_by_id(_id).populate(['followers'])
   end
 

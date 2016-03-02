@@ -38,9 +38,8 @@ class User < ActiveRecord::Base
   end
 
   def follow_project!(project_id)
-    # return false if FollowProject.find_follow self.id, project_id
     follow = FollowProject.new(user: self, project_id: project_id)
-    follow.save ? true : false
+    follow.save
   end
 
   def unfollow_project!(project_id)
