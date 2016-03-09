@@ -16,21 +16,9 @@ RSpec.describe Api::V1::RegistrationsController, type: :controller do
       end
     end
 
-    context "when wrong password_confirmation" do
-      before do
-        post :create, format: :json, :user => { username: "DonutLover", email: "homer@contact.com", password: "KillBart", password_confirmation: "nothing" }
-      end
-
-      it "return response status 400 and errors object" do
-        expect(response.status).to eq(400)
-        expect(JSON(response.body)['status']).to eq(400)
-        expect(JSON(response.body)['errors'].blank?).to eq(false)
-      end
-    end
-
     context "when user data are setted" do
       before do
-        post :create, format: :json, :user => { username: "DonutLover", email: "homer@contact.com", password: "KillBart", password_confirmation: "KillBart" }
+        post :create, format: :json, :user => { username: "DonutLover", email: "homer@contact.com", password: "KillBart"}
       end
 
       it "return response status 201 and user data" do
