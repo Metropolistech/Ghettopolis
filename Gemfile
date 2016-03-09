@@ -56,6 +56,8 @@ group :development, :test do
   gem 'byebug'
   # Gem to have nyan cat color when the tests are running
   gem 'nyan-cat-formatter'
+  # Get environement variables from .env file
+  gem 'dotenv-rails'
 end
 
 group :development do
