@@ -33,8 +33,7 @@ class Project < ActiveRecord::Base
 
   def as_json(options={})
     result = super
-
-    result[:followers_count] = self.followers_count
+    
     result[:author] = self.author
     result[:comments] = format_comments
     result[:tags] = self.tags
