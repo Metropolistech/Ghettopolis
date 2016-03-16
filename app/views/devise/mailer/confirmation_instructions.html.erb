@@ -1,0 +1,5 @@
+<p>Welcome to Metropolis.watch</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><%= link_to 'Confirm my account', "#{ENV['APP_FRONT_DOMAIN']}?confirmation_token=#{@token}" %></p>
