@@ -1,6 +1,7 @@
 class Api::V1::UsersController < ApplicationController
   skip_before_filter :authenticate_user_from_token!, only: [:index, :show]
-
+  skip_before_filter :verify_user_confirmation!
+  
   # GET /api/v1/users
   def index
     res_send data: User.all

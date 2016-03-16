@@ -1,5 +1,6 @@
 class Api::V1::ProjectsController < ApplicationController
   skip_before_filter :authenticate_user_from_token!, only: [:index, :show, :ladder]
+  skip_before_filter :verify_user_confirmation!
 
   # GET /api/v1/projects
   def index
