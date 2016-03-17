@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20160316095943) do
     t.string   "status",      default: "draft"
     t.text     "description"
     t.jsonb    "comments",    default: {},      null: false
+    t.string   "slug"
   end
 
   add_index "projects", ["author_id"], name: "index_projects_on_author_id", using: :btree

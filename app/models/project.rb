@@ -19,6 +19,8 @@ class Project < ActiveRecord::Base
 
   scope :in_competion, -> { joins(:author).where(status: :competition) }
 
+  before_save :create_slug
+
   attr_accessor :followers_count
 
   def followers_count
@@ -33,7 +35,7 @@ class Project < ActiveRecord::Base
 
   def as_json(options={})
     result = super
-    
+
     result[:author] = self.author
     result[:comments] = format_comments
     result[:tags] = self.tags
@@ -47,5 +49,9 @@ class Project < ActiveRecord::Base
 
   def format_comments
     self.comments.values.sort_by { |comment| comment[:created_at]}
+  end
+
+  def create_slug
+    self.slug = self.title.parameterize
   end
 end
