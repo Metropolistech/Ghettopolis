@@ -13,9 +13,11 @@ class Project < ActiveRecord::Base
 
   belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'
 
-  validates :title, :youtube_id, presence: true, uniqueness: true
-  validates :author_id, presence: true
-  validates :status, inclusion: { in: ["draft", "competition", "production", "released"] }
+  validates :youtube_id, uniqueness: true
+  validates :youtube_id, :title, :author_id, presence: true
+  validates :status, inclusion: {
+    in: ["draft", "competition", "production", "released"]
+  }
 
   scope :in_competion, -> { joins(:author).where(status: :competition) }
 
@@ -53,5 +55,6 @@ class Project < ActiveRecord::Base
 
   def create_slug
     self.slug = self.title.parameterize
+    self.slug << "-" << SecureRandom.hex(2) unless Project.where(slug: self.slug).blank?
   end
 end
