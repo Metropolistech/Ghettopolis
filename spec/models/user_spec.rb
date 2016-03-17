@@ -114,6 +114,8 @@ RSpec.describe User, type: :model do
 
         user_b = create_user(data: {
           username: "MargeSimps",
+          firstname: "Marge",
+          lastname: "Simpson",
           email: "marge@contact.com"
         })
 
@@ -152,7 +154,12 @@ RSpec.describe User, type: :model do
 
       before do
         user = create_user
-        user_b = create_user(data: { username: "MargeSimps", email: "marge@contact.com" })
+        user_b = create_user(data: {
+          username: "MargeSimps",
+          firstname: "Marge",
+          lastname: "Simpson",
+          email: "marge@contact.com"
+        })
         project = user_b.create_project!(data: { title: "new project", youtube_id: "1" })
       end
 
@@ -175,7 +182,12 @@ RSpec.describe User, type: :model do
 
     it "cannot delete a project from other users" do
       user_a = create_user
-      user_b = create_user(data: { username: "MargeSimps", email: "marge@contact.com" })
+      user_b = create_user(data: {
+        username: "MargeSimps",
+        firstname: "Marge",
+        lastname: "Simpson",
+        email: "marge@contact.com"
+      })
 
       project_b = user_b.create_project!(data: { title: "hello", youtube_id: "1" })
 
@@ -190,6 +202,8 @@ RSpec.describe User, type: :model do
       user_a = create_user
       user_b = create_user(data: {
         username: "MargeSimps",
+        firstname: "Marge",
+        lastname: "Simpson",
         email: "marge@conact.com"
       })
 
@@ -213,6 +227,8 @@ RSpec.describe User, type: :model do
       user_a = create_user
       user_b = create_user(data: {
         username: "MargeSimps",
+        firstname: "Marge",
+        lastname: "Simpson",
         email: "marge@conact.com"
       })
 

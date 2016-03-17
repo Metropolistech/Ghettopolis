@@ -18,7 +18,13 @@ RSpec.describe Api::V1::RegistrationsController, type: :controller do
 
     context "when user data are setted" do
       before do
-        post :create, format: :json, :user => { username: "DonutLover", email: "homer@contact.com", password: "KillBart"}
+        post :create, format: :json, :user => {
+          username: "DonutLover",
+          firstname: "Homer",
+          lastname: "Simpson",
+          email: "homer@contact.com",
+          password: "KillBart"
+        }
       end
 
       it "return response status 201 and user data" do

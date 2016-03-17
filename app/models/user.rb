@@ -12,7 +12,8 @@ class User < ActiveRecord::Base
   belongs_to :avatar, :class_name => 'Image', :foreign_key => 'image_id'
 
   validates :username, :email, presence: true, uniqueness: true
-
+  validates :firstname, :lastname, presence: true
+  
   validates_format_of :email, with: /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
   def create_project!(data: {})

@@ -19,7 +19,7 @@ class Api::V1::RegistrationsController < ApplicationController
 
   def user_params
     begin
-      params.require(:user).permit(:username, :email, :password)
+      params.require(:user).permit(:username, :email, :password, :lastname, :firstname)
     rescue
       nil
     end
