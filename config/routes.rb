@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
       get "projects/ladder" => "projects#ladder"
 
-      resources :users, except: [:new, :edit, :create], param: :username
+      resources :users, except: [:new, :edit, :create]
       resources :projects, except: [:new, :edit] do
         post :follow
         post :unfollow
