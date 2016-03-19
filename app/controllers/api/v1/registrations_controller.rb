@@ -1,5 +1,6 @@
 class Api::V1::RegistrationsController < ApplicationController
   skip_before_filter :authenticate_user_from_token!
+  skip_before_filter :verify_user_confirmation!
 
   # POST /api/register
   def create
@@ -18,7 +19,7 @@ class Api::V1::RegistrationsController < ApplicationController
 
   def user_params
     begin
-      params.require(:user).permit(:username, :email, :password)
+      params.require(:user).permit(:username, :email, :password, :lastname, :firstname)
     rescue
       nil
     end

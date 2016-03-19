@@ -5,6 +5,7 @@ class Api::V1::BaseController < ActionController::Base
   respond_to :json
 
   before_filter :authenticate_user_from_token!
+  before_filter :verify_user_confirmation!
 
   protected
 
@@ -29,6 +30,10 @@ class Api::V1::BaseController < ActionController::Base
     else
       return render_unauthorized
     end
+  end
+
+  def verify_user_confirmation!
+    current_user.confirmed? ? current_user : render_unauthorized(payload = [Confirmation: "You have to confirm your account."])
   end
 
   def claims

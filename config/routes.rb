@@ -1,12 +1,16 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
+
+      devise_for :users, :skip => :all
       devise_scope :user do
-        # Registrations
-        match 'register' => 'registrations#create', :via => :post, :as => :user_registration
-        # Sessions
-        match 'session' => 'sessions#create', :via => :post
-        match 'session' => 'session#destroy', :via => :delete
+          # Registrations
+          match 'register' => 'registrations#create', :via => :post, :as => :user_registration
+          # Sessions
+          match 'session' => 'sessions#create', :via => :post
+          match 'session' => 'session#destroy', :via => :delete
+          # Confirmations
+          match 'confirmation' => 'confirmations#confirm', :via => :get, :as => :user_confirmation
       end
 
       namespace :me do

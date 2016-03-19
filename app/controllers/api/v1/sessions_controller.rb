@@ -1,5 +1,7 @@
 class Api::V1::SessionsController < ApplicationController
   skip_before_filter :authenticate_user_from_token!
+  skip_before_filter :verify_user_confirmation!
+  
   before_filter :ensure_params_exist
 
   # POST /api/session
