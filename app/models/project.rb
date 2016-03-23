@@ -21,7 +21,7 @@ class Project < ActiveRecord::Base
 
   scope :in_competion, -> { joins(:author).where(status: :competition) }
 
-  before_save :create_slug
+  before_create :create_slug
 
   attr_accessor :followers_count
 
