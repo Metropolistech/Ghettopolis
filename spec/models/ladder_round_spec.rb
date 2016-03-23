@@ -2,9 +2,8 @@ require 'rails_helper'
 
 RSpec.describe LadderRound, type: :model do
   describe "verify LadderRound initial property values" do
-    round = LadderRound.create({})
+    round = LadderRound.create
 
-    puts round.to_json
     it "has no winner" do
       expect(round.winner).to eq(nil)
     end
@@ -23,6 +22,18 @@ RSpec.describe LadderRound, type: :model do
 
     it "has no last_updater" do
       expect(round.last_updater).to eq(nil)
+    end
+  end
+
+  describe "validates" do
+    round = LadderRound.create
+
+    it 'should validates inclusion of running and finished' do
+      should validate_inclusion_of(:status).in_array([:running, :finished])
+    end
+
+    it 'should should not validates random strings' do
+      expect(round).not_to validate_inclusion_of(:status).in_array([:hello, :random, SecureRandom.hex(2).to_str])
     end
   end
 end
