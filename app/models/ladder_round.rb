@@ -5,4 +5,12 @@ class LadderRound < ActiveRecord::Base
   validates :status, inclusion: {
     in: ["running", "finished"]
   }
+
+  def self.current_round
+    if LadderRound.last && LadderRound.last.status == "running"
+      return LadderRound.last
+    else
+      return LadderRound.create
+    end
+  end
 end
