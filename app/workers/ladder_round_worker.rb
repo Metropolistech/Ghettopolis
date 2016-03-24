@@ -16,14 +16,21 @@ class LadderRoundWorker
   end
 
   def get_winner_project
-    if round_is_finished
-      @round.update({ winner: Project.populate_ladder.first }) unless Project.populate_ladder.blank?
-    end
-    # Stop task
+    raise_error message: "Round is not finished." unless round_is_finished?
+
+    @ladder = Project.populate_ladder
+    raise_error message: "Ladder is empty." if @ladder.blank?
+
+    @round.update({ winner: @ladder.first })
+    return self
+  end
+
+  def get_ladder_state
+    @round.update({ ladder_state: @ladder.to_json })
   end
 
   def update_winner_project_status
-
+    @round.winner.update({ status: "production" })
   end
 
   def round_is_finished?
@@ -35,12 +42,16 @@ class LadderRoundWorker
 
   end
 
-  def close_round
+  def close_current_round
 
   end
 
-  def open_round
+  def open_new_round
 
+  end
+
+  def raise_error(message: nil)
+  raise StandardError, "Stop LadderRoundWorker : #{message}"
   end
 
 # GET winner,
