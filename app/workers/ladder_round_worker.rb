@@ -19,11 +19,7 @@ class LadderRoundWorker
   end
 
   def get_current_running_round
-    if LadderRound.last && LadderRound.last.status == "running"
-      @round = LadderRound.last
-    else
-      @round = LadderRound.create
-    end
+    @round = LadderRound.current_round
     self
   end
 
