@@ -33,13 +33,13 @@ RSpec.describe LadderRoundWorker do
     context "when date is not setted" do
       before { @roundWorker.get_current_running_round }
       it "return false" do
-        expect(@roundWorker.round_is_finished?).to eq(false)
+        expect{ @roundWorker.round_is_finished? }.to raise_error
       end
     end
 
     context "when date is setted to tomorow" do
       before do
-        @round.update!({date: 1.day.from_now})
+        @round.update!({ date: 1.day.from_now })
         @roundWorker.get_current_running_round
       end
       it "return false" do
@@ -62,7 +62,7 @@ RSpec.describe LadderRoundWorker do
 
   describe "#get_winner_project" do
     before(:each) do
-      @round = LadderRound.create
+      @round = LadderRound.create({ date: 1.day.from_now })
       @roundWorker.get_current_running_round
     end
 

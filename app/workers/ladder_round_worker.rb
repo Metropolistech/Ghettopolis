@@ -49,7 +49,7 @@ class LadderRoundWorker
 
   def round_is_finished?
     return @round.date.to_date == Date.today unless @round.date.blank?
-    false
+    raise_error message: "Round's end date is not defined."
   end
 
   def send_mail_to_winner_project_author
