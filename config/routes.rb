@@ -20,6 +20,8 @@ Rails.application.routes.draw do
         resources :projects, except: [:new, :edit]
       end
 
+      put "round" => "ladder_round#update"
+
       get "projects/ladder" => "projects#ladder"
 
       resources :users, except: [:new, :edit, :create]

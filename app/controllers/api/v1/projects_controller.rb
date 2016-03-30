@@ -58,9 +58,12 @@ class Api::V1::ProjectsController < ApplicationController
 
   # GET /api/v1/projects/ladder
   def ladder
-    res_send data: Project
+    res_send data: {
+      date: LadderRound.current_round.date,
+      projects: Project
       .populate_ladder
       .as_json(ladder_serialize_options)
+    }
   end
 
   private

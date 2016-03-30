@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160317201602) do
+ActiveRecord::Schema.define(version: 20160323111246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,16 @@ ActiveRecord::Schema.define(version: 20160317201602) do
     t.integer  "width"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "ladder_rounds", force: :cascade do |t|
+    t.integer  "winner_id"
+    t.string   "status",          default: "running", null: false
+    t.jsonb    "ladder_state"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.integer  "last_updater_id"
+    t.datetime "date"
   end
 
   create_table "notification_types", force: :cascade do |t|
