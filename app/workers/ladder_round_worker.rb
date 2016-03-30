@@ -2,6 +2,15 @@ class LadderRoundWorker
 
   attr_accessor :round
 
+  def self.manage_ladder_round
+      LadderRoundWorker.new.run_job
+    rescue Exception => e
+      ReportMailer
+        .send_worker_fail_report(message: e.message)
+        .deliver_now
+      print "Stop LadderRoundWorker : #{e.message}"
+  end
+
   def run_job
     self
       .get_current_running_round
@@ -11,11 +20,6 @@ class LadderRoundWorker
       .send_mail_to_winner_project_author
       .close_current_round
       .open_new_round
-    rescue Exception => e
-      ReportMailer
-        .send_worker_fail_report(message: e.message)
-        .deliver_now
-      print "Stop LadderRoundWorker : #{e.message}"
   end
 
   def get_current_running_round

@@ -43,6 +43,9 @@ gem 'rack-cors'
 # Tags
 gem 'acts-as-taggable-on', '~> 3.4'
 
+# Cron tasks
+gem 'whenever', :require => false
+
 group :test do
   # Code coverage gem
   gem 'simplecov', :require => false
