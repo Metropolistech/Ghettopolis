@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
 
   validates :username, :email, presence: true, uniqueness: true
   validates :firstname, :lastname, presence: true
-  
+
   validates_format_of :email, with: /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
   def create_project!(data: {})
@@ -23,7 +23,8 @@ class User < ActiveRecord::Base
   end
 
   def update_project!(project_id: nil, data: {})
-      project = self.projects.find(project_id)
+      _id = project_id
+      project = self.is_admin ? Project.find_by_id(_id) : self.projects.find(_id)
       project.attributes = data
       project.save
       project
