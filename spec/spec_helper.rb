@@ -18,8 +18,13 @@ require "rails_helper"
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-require "test_helper"
 require 'simplecov'
+
+# Require helpers
+Dir["#{Rails.root.join('spec/helpers/*.rb')}"].each do |f|
+  require(f)
+end
+
 
 # save to CircleCI's artifacts directory if we're on CircleCI
 if ENV['CIRCLE_ARTIFACTS']

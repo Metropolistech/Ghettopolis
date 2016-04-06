@@ -87,13 +87,9 @@ RSpec.describe LadderRoundWorker do
     context "when the round is finished and the ladder is full" do
       before do
         user = create_user
-        @project = user.create_project! data: {
-          title: "Marge's project",
-          youtube_id: SecureRandom.hex(2),
-          status: "competition"
-       }
-       @round = LadderRound.create({ date: Time.now })
-       @roundWorker.get_current_running_round
+        @project = user.create_random_project status: :competition
+        @round = LadderRound.create({ date: Time.now })
+        @roundWorker.get_current_running_round
       end
       it "set the winner in the round" do
         @roundWorker.get_winner_project
@@ -104,7 +100,8 @@ RSpec.describe LadderRoundWorker do
 
   describe "#get_ladder_state" do
     before do
-      @project = create_project status: "competition"
+      user = create_user
+      @project = user.create_random_project status: :competition
       @round = LadderRound.create({ date: Time.now })
       @roundWorker
         .get_current_running_round
@@ -124,7 +121,8 @@ RSpec.describe LadderRoundWorker do
 
   describe "#update_winner_project_status" do
     before do
-      @project = create_project status: "competition"
+      user = create_user
+      @project = user.create_random_project status: :competition
       @round = LadderRound.create({ date: Time.now })
       @roundWorker
         .get_current_running_round
