@@ -20,18 +20,15 @@ class Api::V1::ProjectsController < ApplicationController
   # PUT /api/v1/projects/:id
   def update
     @project = current_user
-      .update_project! data: projects_params, project_id: params[:id]
-    unless @project
-      res_send status: 204
-    else
-      return res_send data: @project if @project.errors.blank?
-      res_send data: @project.errors.messages, error: true
-    end
+      .update_project! data: filtered_params, project_id: params[:id]
+    return res_send status: 204 unless @project
+    return res_send data: @project if @project.errors.blank?
+    res_send data: @project.errors.messages, error: true
   end
 
   # POST /api/v1/projects
   def create
-    @project = current_user.create_project!(data: projects_params)
+    @project = current_user.create_project!(data: filtered_params)
     return res_send data: @project, status: 201 if @project.errors.blank?
     res_send data: @project.errors.messages, error: true
   end
@@ -76,7 +73,7 @@ class Api::V1::ProjectsController < ApplicationController
         :description,
         :status,
         :cover_id,
-        :tag_list
+        :tags
       )
     rescue
       nil
@@ -96,5 +93,11 @@ class Api::V1::ProjectsController < ApplicationController
 
   def required_params
     return res_send data:[ActionRecord: "Missing required project parameter"], error: true unless projects_params
+  end
+
+  def filtered_params
+    projects_params
+      .to_h
+      .rename_key(:tags, :tag_list)
   end
 end
