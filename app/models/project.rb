@@ -13,7 +13,7 @@ class Project < ActiveRecord::Base
 
   belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'
 
-  validates :youtube_id, uniqueness: true
+  validates :youtube_id, :released_youtube_id, uniqueness: true
   validates :youtube_id, :title, :author_id, :description, presence: true
   validates :status, inclusion: { in: ["draft", "competition", "production", "released"] }
 
