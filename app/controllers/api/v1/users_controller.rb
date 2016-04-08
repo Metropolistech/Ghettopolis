@@ -42,6 +42,6 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def find_user_by_usernae_or_id
-    @user = User.find_by_username(params[:id]) || User.find_by_id(params[:id])
+    @user = User.find_by_username(params[:id].downcase) || User.find_by_id(params[:id])
   end
 end
