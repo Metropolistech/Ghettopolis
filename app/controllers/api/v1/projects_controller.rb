@@ -73,7 +73,8 @@ class Api::V1::ProjectsController < ApplicationController
         :description,
         :status,
         :cover_id,
-        :tags
+        :tags,
+        :released_youtube_id
       )
     rescue
       nil
