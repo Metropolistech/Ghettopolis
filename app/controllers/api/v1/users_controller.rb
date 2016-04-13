@@ -32,7 +32,14 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def users_params
-      params.require(:user).permit(:username, :email, :password, :password_confirmation, :is_admin)
+      params.require(:user).permit(
+        :username,
+        :email,
+        :password,
+        :password_confirmation,
+        :is_admin,
+        :bio
+      )
     rescue
       nil
   end
