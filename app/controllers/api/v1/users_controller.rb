@@ -51,7 +51,8 @@ class Api::V1::UsersController < ApplicationController
     end
 
     def find_user_by_usernae_or_id
-      @user = User.where("lower(username) = ?", params[:id].downcase).first || User.find_by_id(params[:id])
+      _id = params[:id]
+      @user = User.find_by_lower_username(_id).first || User.find_by_id(_id)
     end
 
     def filtered_params

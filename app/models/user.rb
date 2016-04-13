@@ -16,6 +16,9 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true
   validates_format_of :email, with: /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
+  scope :find_by_lower_username,
+    -> (username) { where("lower(username) = ?", username.downcase) }
+
   def create_project!(data: {})
     project = Project.new(data.merge(author_id: self.id))
     project.save
