@@ -1,8 +1,10 @@
 class Api::V1::UsersController < ApplicationController
+  include FilterParamsConcern
+
   skip_before_filter :authenticate_user_from_token!, only: [:index, :show]
   skip_before_filter :verify_user_confirmation!
 
-  before_filter :required_params, only: [:update]
+  before_filter :exist_required_params?, only: [:update]
   before_filter :find_user_by_usernae_or_id, only: [:show, :update]
 
   # GET /api/v1/users
@@ -21,7 +23,7 @@ class Api::V1::UsersController < ApplicationController
   def update
     return res_send status: 204 if @user.blank?
     return res_send status: 401 if @user.id != current_user.id
-    return res_send data: @user if @user.update(users_params)
+    return res_send data: @user if @user.update(filtered_params)
     res_send data: @user.errors.messages, error: true
   end
 
@@ -30,26 +32,29 @@ class Api::V1::UsersController < ApplicationController
   end
 
   private
+    def required_params
+        params.require(:user).permit(
+          :username,
+          :email,
+          :password,
+          :password_confirmation,
+          :is_admin,
+          :bio,
+          :skills
+        )
+      rescue
+        nil
+    end
 
-  def users_params
-      params.require(:user).permit(
-        :username,
-        :email,
-        :password,
-        :password_confirmation,
-        :is_admin,
-        :bio
-      )
-    rescue
-      nil
-  end
+    def exist_required_params?
+      return res_send data:[ActionRecord: "Missing required user parameter"], error: true unless required_params
+    end
 
-  def required_params
-    return res_send data:[ActionRecord: "Missing required user parameter"], error: true unless users_params
-  end
+    def find_user_by_usernae_or_id
+      @user = User.where("lower(username) = ?", params[:id].downcase).first || User.find_by_id(params[:id])
+    end
 
-  def find_user_by_usernae_or_id
-
-    @user = User.where("lower(username) = ?", params[:id].downcase).first || User.find_by_id(params[:id])
-  end
+    def filtered_params
+      filter_params(key: :skills, to: :skill_list)
+    end
 end

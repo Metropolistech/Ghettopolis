@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
   include PopulateConcern
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+
+  acts_as_taggable_on :skills
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
@@ -47,5 +48,13 @@ class User < ActiveRecord::Base
       follow = self.follow_projects.find_by_project_id(project_id)
       return follow.destroy ? true : false if follow
       false
+  end
+
+  def as_json(options={})
+    result = super
+    result[:avatar] = self.avatar
+    result[:skills] = self.skills
+    options[:except].each { |attr| result.except!(attr)} if options.has_key?(:except)
+    result
   end
 end
