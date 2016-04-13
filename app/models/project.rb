@@ -1,28 +1,8 @@
-require 'serializers/hash_serializer'
-
 class Project < ActiveRecord::Base
-  include PopulateConcern
-  include LadderConcern
-
-  acts_as_taggable
-
-  serialize :comments, HashSerializer
-
-  has_many :follow_projects
-  has_many :followers, through: :follow_projects, source: :user
-
-  belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'
-
-  validates :youtube_id, uniqueness: true
-  validates :released_youtube_id, uniqueness: true, :allow_nil => true
-  validates :youtube_id, :title, :author_id, :description, presence: true
-  validates :status, inclusion: { in: ["draft", "competition", "production", "released"] }
-
-  validate :check_tag_list!
-
-  scope :in_competion, -> { joins(:author).where(status: :competition) }
+  include ProjectConcern
 
   before_create :create_slug
+  validate :check_tag_list!
 
   attr_accessor :followers_count
 
@@ -49,17 +29,16 @@ class Project < ActiveRecord::Base
   end
 
   private
+    def format_comments
+      self.comments.values.sort_by { |comment| comment[:created_at]}
+    end
 
-  def format_comments
-    self.comments.values.sort_by { |comment| comment[:created_at]}
-  end
+    def create_slug
+      self.slug = self.title.parameterize
+      self.slug << "-" << SecureRandom.hex(2) unless Project.where(slug: self.slug).blank?
+    end
 
-  def create_slug
-    self.slug = self.title.parameterize
-    self.slug << "-" << SecureRandom.hex(2) unless Project.where(slug: self.slug).blank?
-  end
-
-  def check_tag_list!
-    errors.add(:tag_list, "A minimum of 3 tags is required.") if self.tag_list.size < 3
-  end
+    def check_tag_list!
+      errors.add(:tag_list, "A minimum of 3 tags is required.") if self.tag_list.size < 3
+    end
 end
