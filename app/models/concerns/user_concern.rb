@@ -12,8 +12,7 @@ module UserConcern
     has_many :follow_projects
     has_many :followed_projects, through: :follow_projects, source: :project
     has_many :projects, foreign_key: "author_id", class_name: "Project"
-
-    has_one :avatar,  :class_name => "Image", as: :img_target, dependent: :destroy
+    has_many :avatar, :class_name => "Image", as: :img_target, dependent: :destroy
 
     validates :username, presence: true, uniqueness: { case_sensitive: false }
     validates :email, presence: true, uniqueness: true
@@ -21,5 +20,7 @@ module UserConcern
 
     scope :find_by_lower_username,
       -> (username) { where("lower(username) = ?", username.downcase) }
+
+    attr_accessor :image_data
   end
 end

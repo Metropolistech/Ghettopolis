@@ -1,11 +1,13 @@
 class Api::V1::UsersController < ApplicationController
   include FilterParamsConcern
+  include S3ImagesConcern
 
   skip_before_filter :authenticate_user_from_token!, only: [:index, :show]
   skip_before_filter :verify_user_confirmation!
 
   before_filter :exist_required_params?, only: [:update]
   before_filter :find_user_by_usernae_or_id, only: [:show, :update]
+  before_filter :filtered_params, only: [:update]
 
   # GET /api/v1/users
   def index
@@ -23,7 +25,8 @@ class Api::V1::UsersController < ApplicationController
   def update
     return res_send status: 204 if @user.blank?
     return res_send status: 401 if @user.id != current_user.id
-    return res_send data: @user if @user.update(filtered_params)
+    create_user_avatar if @filtered_params["image_data"]
+    return res_send data: @user if @user.update(@filtered_params)
     res_send data: @user.errors.messages, error: true
   end
 
@@ -32,6 +35,11 @@ class Api::V1::UsersController < ApplicationController
   end
 
   private
+    def create_user_avatar
+      img_db = create_image(@filtered_params)
+      img_db.update_attribute(:img_target, current_user) unless img_db.blank?
+    end
+
     def required_params
         params.require(:user).permit(
           :username,
@@ -42,7 +50,8 @@ class Api::V1::UsersController < ApplicationController
           :password_confirmation,
           :is_admin,
           :bio,
-          :skills
+          :skills,
+          :image_data
         )
       rescue
         nil
@@ -58,6 +67,6 @@ class Api::V1::UsersController < ApplicationController
     end
 
     def filtered_params
-      filter_params(key: :skills, to: :skill_list)
+      @filtered_params = filter_params(key: :skills, to: :skill_list)
     end
 end
