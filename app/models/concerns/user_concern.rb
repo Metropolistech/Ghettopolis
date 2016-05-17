@@ -13,7 +13,7 @@ module UserConcern
     has_many :followed_projects, through: :follow_projects, source: :project
     has_many :projects, foreign_key: "author_id", class_name: "Project"
 
-    belongs_to :avatar, :class_name => 'Image', :foreign_key => 'image_id'
+    has_one :avatar,  :class_name => "Image", as: :img_target, dependent: :destroy
 
     validates :username, presence: true, uniqueness: { case_sensitive: false }
     validates :email, presence: true, uniqueness: true

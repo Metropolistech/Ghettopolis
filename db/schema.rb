@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160413085417) do
+ActiveRecord::Schema.define(version: 20160517143243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,11 +49,11 @@ ActiveRecord::Schema.define(version: 20160413085417) do
   add_index "follow_projects", ["user_id"], name: "index_follow_projects_on_user_id", using: :btree
 
   create_table "images", force: :cascade do |t|
-    t.string   "url"
-    t.integer  "height"
-    t.integer  "width"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "image_name"
+    t.integer  "img_target_id"
+    t.string   "img_target_type"
   end
 
   create_table "ladder_rounds", force: :cascade do |t|
