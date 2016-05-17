@@ -46,6 +46,9 @@ gem 'acts-as-taggable-on', '~> 3.4'
 # AWS bucket S3
 gem 'aws-sdk', '~> 2'
 
+# Cron tasks
+gem 'whenever', :require => false
+
 group :test do
   # Code coverage gem
   gem 'simplecov', :require => false
@@ -58,6 +61,8 @@ group :development, :test do
   gem 'nyan-cat-formatter'
   # Get environement variables from .env file
   gem 'dotenv-rails'
+  # Using shloud matchers to test models
+  gem 'shoulda-matchers', '~> 3.1'
 end
 
 group :development do

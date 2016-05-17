@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160317201602) do
+ActiveRecord::Schema.define(version: 20160413085417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,16 @@ ActiveRecord::Schema.define(version: 20160317201602) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "ladder_rounds", force: :cascade do |t|
+    t.integer  "winner_id"
+    t.string   "status",          default: "running", null: false
+    t.jsonb    "ladder_state"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.integer  "last_updater_id"
+    t.datetime "date"
+  end
+
   create_table "notification_types", force: :cascade do |t|
     t.string   "content"
     t.datetime "created_at", null: false
@@ -78,14 +88,15 @@ ActiveRecord::Schema.define(version: 20160317201602) do
     t.string   "title"
     t.string   "youtube_id"
     t.integer  "room_max"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.integer  "author_id"
     t.integer  "cover_id"
-    t.string   "status",      default: "draft"
+    t.string   "status",              default: "draft"
     t.text     "description"
-    t.jsonb    "comments",    default: {},      null: false
+    t.jsonb    "comments",            default: {},      null: false
     t.string   "slug"
+    t.string   "released_youtube_id"
   end
 
   add_index "projects", ["author_id"], name: "index_projects_on_author_id", using: :btree
@@ -151,6 +162,7 @@ ActiveRecord::Schema.define(version: 20160317201602) do
     t.datetime "confirmation_sent_at"
     t.string   "lastname"
     t.string   "firstname"
+    t.text     "bio"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

@@ -20,13 +20,8 @@ RSpec.describe Project, type: :model do
     user_a = user_b = project = nil
     before(:each) do
       user_a = create_user
-      user_b = create_user data: {
-        username: "MargeSimps",
-        firstname: "Marge",
-        lastname: "Simpson",
-        email: "marge@contact.com"
-      }
-      project = user_a.create_project! data: { title: "Marge's project", youtube_id: "1" }
+      user_b = create_user
+      project = user_a.create_random_project
     end
 
     it "can get the followers" do
