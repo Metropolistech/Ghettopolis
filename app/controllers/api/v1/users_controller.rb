@@ -53,7 +53,8 @@ class Api::V1::UsersController < ApplicationController
           :is_admin,
           :bio,
           :skills,
-          :image_data
+          :image_data,
+          :networks => [:facebook, :twitter, :youtube, :linkedin]
         )
       rescue
         nil
