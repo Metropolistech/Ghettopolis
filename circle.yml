@@ -5,4 +5,5 @@ deployment:
       - git push -f git@heroku.com:metropolis-api-dev.git develop:master
       - heroku run rake db:migrate --app metropolis-api-dev:
           timeout: 400 # if your deploys take a long time
+      - bundle exec whenever -w
       - bundle exec whenever

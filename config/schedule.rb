@@ -21,6 +21,6 @@
 
 set :output, "#{path}/log/crons/round_cron.log"
 
-every 2.minutes do
+every 1.minutes do
   runner "LadderRoundWorker.manage_ladder_round"
 end
