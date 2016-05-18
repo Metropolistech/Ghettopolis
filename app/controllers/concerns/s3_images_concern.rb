@@ -4,14 +4,8 @@ module S3ImagesConcern
   @@image_regex = %r{^data:(.*?);(.*?),(.*)$}
   @@dest_folder = "uploads"
 
-  def create_image(obj_hash)
-    image = self.upload_to_S3(obj_hash)
-    return nil if image.blank?
-    Image.create(image_name: image)
-  end
-
   def upload_to_S3(obj_hash)
-    if obj_hash["image_data"].try(:match, @@image_regex)
+    if obj_hash[:image_data].try(:match, @@image_regex)
       self
         .decode_image_data(obj_hash: obj_hash)
         .create_temporary_file
@@ -39,7 +33,7 @@ module S3ImagesConcern
   end
 
   def decode_image_data(obj_hash: {})
-    @image_data = split_image_data(obj_hash["image_data"])
+    @image_data = split_image_data(obj_hash[:image_data])
     image_encoded_string = @image_data[:encoded]
     @image_data_binary = Base64.decode64(image_encoded_string)
     self
