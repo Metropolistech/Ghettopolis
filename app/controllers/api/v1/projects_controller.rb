@@ -10,11 +10,12 @@ class Api::V1::ProjectsController < ApplicationController
 
   # GET /api/v1/projects
   def index
-    res_send(data: Project.all)
+    res_send(data: Project.available)
   end
 
   # GET /api/v1/projects/:id
   def show
+    return res_send status: 204 unless @project.deleted_at.blank?
     return res_send data: @project.populate(@attributes) if @project
     res_send(status: 204)
   end
@@ -39,19 +40,26 @@ class Api::V1::ProjectsController < ApplicationController
 
   # Only admin can access to this route
   def destroy
-
+    project = Project.find_by_id(params[:id])
+    return res_send status: 401 if current_user.id != project.author.id
+    project.update_attribute(:deleted_at, Time.now)
+    res_send status: 204
   end
 
   # POST /api/v1/projects/:project_id/follow
   def follow
     _id = params[:project_id]
+    project = Project.available.find_by_id(_id)
+    return res_send status: 204 if project.blank?
     current_user.follow_project!(_id)
-    res_send data: Project.find_by_id(_id).populate(['followers'])
+    res_send data: project.populate(['followers'])
   end
 
   # POST /api/v1/projects/:project_id/unfollow
   def unfollow
     _id = params[:project_id]
+    project = Project.available.find_by_id(_id)
+    return res_send status: 204 if project.blank?
     current_user.unfollow_project!(_id)
     res_send data: Project.find_by_id(_id).populate(['followers'])
   end

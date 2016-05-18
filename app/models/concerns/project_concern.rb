@@ -18,6 +18,8 @@ module ProjectConcern
 
     scope :in_competion, -> { joins(:author).where(status: :competition) }
 
+    scope :available, -> { where(deleted_at: nil) }
+
     serialize :comments, HashSerializer
 
     acts_as_taggable

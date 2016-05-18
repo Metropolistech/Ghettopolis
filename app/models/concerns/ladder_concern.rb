@@ -4,6 +4,7 @@ module LadderConcern
   class_methods do
     def populate_ladder
       self
+        .available
         .in_competion
         .sort_by { |project| project.created_at }
         .reverse

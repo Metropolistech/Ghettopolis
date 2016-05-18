@@ -17,13 +17,6 @@ class User < ActiveRecord::Base
       false
   end
 
-  def delete_project!(project_id)
-      project = self.projects.find(project_id)
-      project.destroy
-    rescue
-      false
-  end
-
   def follow_project!(project_id)
     follow = FollowProject.new(user: self, project_id: project_id)
     follow.save
