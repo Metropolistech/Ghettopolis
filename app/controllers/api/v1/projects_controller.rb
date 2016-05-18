@@ -83,7 +83,7 @@ class Api::V1::ProjectsController < ApplicationController
     end
 
     def filtered_params
-      filter_params(key: :tags, to: :tag_list)
+      rename_params(key: :tags, to: :tag_list)
     end
 
     def ladder_serialize_options
