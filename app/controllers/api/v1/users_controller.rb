@@ -6,7 +6,7 @@ class Api::V1::UsersController < ApplicationController
   skip_before_filter :verify_user_confirmation!
 
   before_filter :exist_required_params?, only: [:update]
-  before_filter :find_user_by_usernae_or_id, only: [:show, :update]
+  before_filter :find_user_by_username_or_id, only: [:show, :update]
   before_filter :filtered_params, only: [:update]
   before_filter :create_user_avatar, only: [:update]
 
@@ -64,7 +64,7 @@ class Api::V1::UsersController < ApplicationController
       return res_send data:[ActionRecord: "Missing required user parameter"], error: true unless required_params
     end
 
-    def find_user_by_usernae_or_id
+    def find_user_by_username_or_id
       _id = params[:id]
       @user = User.find_by_lower_username(_id).first || User.find_by_id(_id)
     end
