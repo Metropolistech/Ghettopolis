@@ -131,36 +131,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "#delete_project!" do
-
-    context "when it is user own project" do
-
-      before do
-        @user = create_user
-        @project = @user.create_random_project
-      end
-
-      it "can delete a project" do
-        expect(@user.projects.count).to eq(1)
-        @user.delete_project!(@project.id)
-        expect(@user.projects.count).to eq(0)
-      end
-    end
-
-    context "when it is not his own project" do
-
-      before do
-        @user_a = create_user
-        @user_b = create_user
-        @project_b = @user_b.create_random_project
-      end
-
-      it "cannot delete a project from other users" do
-        expect(@user_a.delete_project!(@project_b.id)).to eq(false)
-      end
-    end
-  end
-
   describe "#follow_project!" do
 
     before(:each) do
