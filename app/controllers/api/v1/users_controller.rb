@@ -2,13 +2,16 @@ class Api::V1::UsersController < ApplicationController
   include FilterParamsConcern
   include ImagesConcern
 
-  skip_before_filter :authenticate_user_from_token!, only: [:index, :show]
-  skip_before_filter :verify_user_confirmation!
+  skip_before_action :authenticate_user_from_token!, only: [:index, :show]
+  skip_before_action :verify_user_confirmation!
 
-  before_filter :exist_required_params?, only: [:update]
-  before_filter :find_user_by_username_or_id, only: [:show, :update]
-  before_filter :filtered_params, only: [:update]
-  before_filter :create_user_avatar, only: [:update]
+  before_action :exist_required_params?, only: [:update]
+  before_action :find_user_by_username_or_id, only: [:show, :update]
+  before_action :filtered_params, only: [:update]
+  before_action :create_user_avatar, only: [:update]
+  before_action only: [:update] do
+    update_networks_if_requested @filtered_params["networks"]
+  end
 
   # GET /api/v1/users
   def index
@@ -71,5 +74,10 @@ class Api::V1::UsersController < ApplicationController
 
     def filtered_params
       @filtered_params = rename_params(key: :skills, to: :skill_list)
+    end
+
+    def update_networks_if_requested(networks)
+      @filtered_params["networks"] = current_user.networks
+        .merge(networks)
     end
 end
