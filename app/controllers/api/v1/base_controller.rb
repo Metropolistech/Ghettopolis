@@ -4,8 +4,8 @@ class Api::V1::BaseController < ActionController::Base
   include ActionController::ImplicitRender
   respond_to :json
 
-  before_filter :authenticate_user_from_token!
-  before_filter :verify_user_confirmation!
+  before_action :authenticate_user_from_token!
+  before_action :verify_user_confirmation!
 
   protected
 

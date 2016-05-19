@@ -1,5 +1,5 @@
 class Api::V1::LadderRoundController < ApplicationController
-  before_filter :required_params, only: [:update]
+  before_action :required_params, only: [:update]
 
   # PUT /api/v1/round
   def update

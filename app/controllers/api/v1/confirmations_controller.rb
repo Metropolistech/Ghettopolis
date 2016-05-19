@@ -1,6 +1,6 @@
 class Api::V1::ConfirmationsController < ApplicationController
-  skip_before_filter :authenticate_user_from_token!
-  skip_before_filter :verify_user_confirmation!
+  skip_before_action :authenticate_user_from_token!
+  skip_before_action :verify_user_confirmation!
 
   def confirm
     return res_send status: 403 unless confirmations_params

@@ -1,12 +1,12 @@
 class Api::V1::ProjectsController < ApplicationController
   include FilterParamsConcern
 
-  skip_before_filter :authenticate_user_from_token!, only: [:index, :show, :ladder]
-  skip_before_filter :verify_user_confirmation!
+  skip_before_action :authenticate_user_from_token!, only: [:index, :show, :ladder]
+  skip_before_action :verify_user_confirmation!
 
-  before_filter :find_project_by_slug_or_id, only: [:show, :update]
-  before_filter :get_populate_attributes, only: [:show]
-  before_filter :exist_required_params?, only: [:create, :update]
+  before_action :find_project_by_slug_or_id, only: [:show, :update]
+  before_action :get_populate_attributes, only: [:show]
+  before_action :exist_required_params?, only: [:create, :update]
 
   # GET /api/v1/projects
   def index
