@@ -13,13 +13,6 @@ Rails.application.routes.draw do
           match 'confirmation' => 'confirmations#confirm', :via => :get, :as => :user_confirmation
       end
 
-      namespace :me do
-        root to: "user#index"
-        put "/", to: "user#update"
-        delete "/", to: "user#destroy"
-        resources :projects, except: [:new, :edit]
-      end
-
       put "round" => "ladder_round#update"
 
       get "projects/ladder" => "projects#ladder"
