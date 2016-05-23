@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
       resources :users, except: [:new, :edit, :create]
       resources :projects, except: [:new, :edit] do
+        get :followers
         post :follow
         post :unfollow
         resources :comments, only: [:create, :update, :destroy]

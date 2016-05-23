@@ -5,7 +5,7 @@ class Api::V1::ProjectsController < ApplicationController
   skip_before_action :authenticate_user_from_token!, only: [:index, :show, :ladder]
   skip_before_action :verify_user_confirmation!
 
-  before_action :find_project_by_slug_or_id, only: [:show, :update]
+  before_action :find_project_by_slug_or_id, only: [:show, :update, :followers]
   before_action :get_populate_attributes, only: [:show]
   before_action :exist_required_params?, only: [:create, :update]
   before_action :filtered_params, only: [:create, :update]
@@ -43,8 +43,7 @@ class Api::V1::ProjectsController < ApplicationController
     res_send data: @current_project.errors.messages, error: true
   end
 
-
-  # Only admin can access to this route
+  # DELETE /api/v1/projects/:id
   def destroy
     project = Project.find_by_id(params[:id])
     return res_send status: 401 if current_user.id != project.author.id
@@ -68,6 +67,12 @@ class Api::V1::ProjectsController < ApplicationController
     return res_send status: 204 if project.blank?
     current_user.unfollow_project!(_id)
     res_send data: Project.find_by_id(_id).populate(['followers'])
+  end
+
+  # GET /api/v1/projects/:project_id/followers
+  def followers
+    res_send data: @current_project
+      .followers.as_json(only: [:username, :avatar])
   end
 
   # GET /api/v1/projects/ladder
@@ -106,7 +111,8 @@ class Api::V1::ProjectsController < ApplicationController
     end
 
     def find_project_by_slug_or_id
-      @current_project = Project.find_by_slug(params[:id]) || Project.find_by_id(params[:id])
+      _id = params[:id] || params[:project_id]
+      @current_project = Project.find_by_slug(_id) || Project.find_by_id(_id)
       res_send status: 204 if @current_project.blank?
     end
 
