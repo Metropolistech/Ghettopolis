@@ -18,10 +18,10 @@ class Project < ActiveRecord::Base
 
   def as_json(options={})
     result = super
-
     result[:author] = self.author
     result[:comments] = format_comments
     result[:tags] = self.tags
+    result[:cover] = self.cover.last
 
     options[:except].each { |attr| result.except!(attr)} if options.has_key?(:except)
 

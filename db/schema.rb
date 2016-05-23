@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160518153922) do
+ActiveRecord::Schema.define(version: 20160523141130) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,7 +91,6 @@ ActiveRecord::Schema.define(version: 20160518153922) do
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.integer  "author_id"
-    t.integer  "cover_id"
     t.string   "status",              default: "draft"
     t.text     "description"
     t.jsonb    "comments",            default: {},      null: false
@@ -145,13 +144,13 @@ ActiveRecord::Schema.define(version: 20160518153922) do
   create_table "users", force: :cascade do |t|
     t.string   "username"
     t.string   "email"
-    t.datetime "created_at",                                                                                          null: false
-    t.datetime "updated_at",                                                                                          null: false
-    t.string   "encrypted_password",     default: "",                                                                 null: false
+    t.datetime "created_at",                                                                         null: false
+    t.datetime "updated_at",                                                                         null: false
+    t.string   "encrypted_password",     default: "",                                                null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,                                                                  null: false
+    t.integer  "sign_in_count",          default: 0,                                                 null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
@@ -164,7 +163,7 @@ ActiveRecord::Schema.define(version: 20160518153922) do
     t.string   "lastname"
     t.string   "firstname"
     t.text     "bio"
-    t.jsonb    "networks",               default: {"twitter"=>nil, "youtube"=>nil, "facebook"=>nil, "linkedin"=>nil}, null: false
+    t.jsonb    "networks",               default: {"twitter"=>nil, "youtube"=>nil, "facebook"=>nil}, null: false
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

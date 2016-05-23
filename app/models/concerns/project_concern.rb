@@ -8,6 +8,7 @@ module ProjectConcern
 
     has_many :follow_projects
     has_many :followers, through: :follow_projects, source: :user
+    has_many :cover, :class_name => "Image", as: :img_target, dependent: :destroy
 
     belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'
 
@@ -23,5 +24,7 @@ module ProjectConcern
     serialize :comments, HashSerializer
 
     acts_as_taggable
+
+    attr_accessor :image_data
   end
 end

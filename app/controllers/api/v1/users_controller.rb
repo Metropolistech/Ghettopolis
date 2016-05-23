@@ -8,7 +8,11 @@ class Api::V1::UsersController < ApplicationController
   before_action :exist_required_params?, only: [:update]
   before_action :find_user_by_username_or_id, only: [:show, :update]
   before_action :filtered_params, only: [:update]
-  before_action :create_user_avatar, only: [:update]
+
+  before_action only: [:update] do
+    create_image_to_entity current_user
+  end
+
   before_action only: [:update] do
     update_networks_if_requested @filtered_params["networks"]
   end
@@ -38,13 +42,6 @@ class Api::V1::UsersController < ApplicationController
   end
 
   private
-    def create_user_avatar
-      if @filtered_params["image_data"]
-        img_db = save_image_to_s3_and_db(@filtered_params)
-        img_db.update_attribute(:img_target, current_user) if img_db.valid?
-      end
-    end
-
     def required_params
         params.require(:user).permit(
           :username,

@@ -1,5 +1,6 @@
 class Api::V1::ProjectsController < ApplicationController
   include FilterParamsConcern
+  include ImagesConcern
 
   skip_before_action :authenticate_user_from_token!, only: [:index, :show, :ladder]
   skip_before_action :verify_user_confirmation!
@@ -7,6 +8,11 @@ class Api::V1::ProjectsController < ApplicationController
   before_action :find_project_by_slug_or_id, only: [:show, :update]
   before_action :get_populate_attributes, only: [:show]
   before_action :exist_required_params?, only: [:create, :update]
+  before_action :filtered_params, only: [:create, :update]
+
+  before_action only: [:update] do
+    create_image_to_entity current_user
+  end
 
   # GET /api/v1/projects
   def index
@@ -15,15 +21,15 @@ class Api::V1::ProjectsController < ApplicationController
 
   # GET /api/v1/projects/:id
   def show
-    return res_send status: 204 unless @project.deleted_at.blank?
-    return res_send data: @project.populate(@attributes) if @project
+    return res_send status: 204 unless @current_project.deleted_at.blank?
+    return res_send data: @current_project.populate(@attributes) if @current_project
     res_send(status: 204)
   end
 
   # PUT /api/v1/projects/:id
   def update
     @updated_project = current_user
-      .update_project! data: filtered_params, project_id: @project.id
+      .update_project! data: @filtered_params, project_id: @current_project.id
     return res_send status: 204 unless @updated_project
     return res_send data: @updated_project if @updated_project.errors.blank?
     res_send data: @updated_project.errors.messages, error: true
@@ -31,10 +37,10 @@ class Api::V1::ProjectsController < ApplicationController
 
   # POST /api/v1/projects
   def create
-    @project = current_user
-      .create_project!(data: filtered_params)
-    return res_send data: @project, status: 201 if @project.errors.blank?
-    res_send data: @project.errors.messages, error: true
+    @current_project = current_user
+      .create_project!(data: @filtered_params)
+    return res_send data: @current_project, status: 201 if @current_project.errors.blank?
+    res_send data: @current_project.errors.messages, error: true
   end
 
 
@@ -84,14 +90,15 @@ class Api::V1::ProjectsController < ApplicationController
           :status,
           :cover_id,
           :tags,
-          :released_youtube_id
+          :released_youtube_id,
+          :image_data
         )
       rescue
         nil
     end
 
     def filtered_params
-      rename_params(key: :tags, to: :tag_list)
+      @filtered_params = rename_params(key: :tags, to: :tag_list)
     end
 
     def ladder_serialize_options
@@ -99,8 +106,8 @@ class Api::V1::ProjectsController < ApplicationController
     end
 
     def find_project_by_slug_or_id
-      @project = Project.find_by_slug(params[:id]) || Project.find_by_id(params[:id])
-      res_send status: 204 if @project.blank?
+      @current_project = Project.find_by_slug(params[:id]) || Project.find_by_id(params[:id])
+      res_send status: 204 if @current_project.blank?
     end
 
     def get_populate_attributes
