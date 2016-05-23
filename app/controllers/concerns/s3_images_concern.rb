@@ -27,9 +27,9 @@ module S3ImagesConcern
       .put_object({
         acl: "public-read",
         body: @temp_img_file,
-        key: "#{@@dest_folder}/#{get_filename}"
+        key: "#{@@dest_folder}/#{get_filename}.jpg"
       })
-    @filename
+    return "#{@filename}.jpg"
   end
 
   def decode_image_data(obj_hash: {})
@@ -53,6 +53,6 @@ module S3ImagesConcern
   end
 
   def get_filename
-     @filename = "#{SecureRandom.hex}.#{@image_data[:extension]}"
+     @filename = SecureRandom.hex
   end
 end
