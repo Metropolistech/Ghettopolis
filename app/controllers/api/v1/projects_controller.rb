@@ -100,6 +100,7 @@ class Api::V1::ProjectsController < ApplicationController
 
     def find_project_by_slug_or_id
       @project = Project.find_by_slug(params[:id]) || Project.find_by_id(params[:id])
+      res_send status: 204 if @project.blank?
     end
 
     def get_populate_attributes
