@@ -78,6 +78,6 @@ class Api::V1::UsersController < ApplicationController
 
     def update_networks_if_requested(networks)
       @filtered_params["networks"] = current_user.networks
-        .merge(networks)
+        .merge(networks) unless @filtered_params["networks"].blank?
     end
 end
