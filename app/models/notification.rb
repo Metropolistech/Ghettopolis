@@ -1,5 +1,5 @@
 class Notification < ActiveRecord::Base
+  belongs_to :notif_duty, polymorphic: true
   belongs_to :user
-  belongs_to :project
-  belongs_to :backstage_post
+  belongs_to :notification_type
 end
