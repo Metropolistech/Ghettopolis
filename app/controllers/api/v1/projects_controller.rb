@@ -39,6 +39,7 @@ class Api::V1::ProjectsController < ApplicationController
   def create
     @current_project = current_user
       .create_project!(data: @filtered_params)
+    create_image_to_entity @current_project
     return res_send data: @current_project, status: 201 if @current_project.errors.blank?
     res_send data: @current_project.errors.messages, error: true
   end

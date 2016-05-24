@@ -8,7 +8,7 @@ module ProjectConcern
 
     has_many :follow_projects
     has_many :followers, through: :follow_projects, source: :user
-    has_one :cover, -> { order created_at: :desc },, :class_name => "Image", as: :img_target, dependent: :destroy
+    has_one :cover, -> { order created_at: :desc }, :class_name => "Image", as: :img_target, dependent: :destroy
 
     belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'
 
