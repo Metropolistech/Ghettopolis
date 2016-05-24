@@ -2,7 +2,7 @@ class Api::V1::ProjectsController < ApplicationController
   include FilterParamsConcern
   include ImagesConcern
 
-  skip_before_action :authenticate_user_from_token!, only: [:index, :show, :ladder]
+  skip_before_action :authenticate_user_from_token!, only: [:index, :show, :ladder, :followers]
   skip_before_action :verify_user_confirmation!
 
   before_action :find_project_by_slug_or_id, only: [:show, :update, :followers, :destroy]
