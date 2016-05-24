@@ -45,8 +45,8 @@ class Api::V1::ProjectsController < ApplicationController
 
   # DELETE /api/v1/projects/:id
   def destroy
-    return res_send status: 401 if current_user.id != project.author.id || !current_user.is_admin?
-    project.update_attribute(:deleted_at, Time.now)
+    return res_send status: 401 if current_user.id != @current_project.author.id || !current_user.is_admin?
+    @current_project.update_attribute(:deleted_at, Time.now)
     res_send status: 204
   end
 
