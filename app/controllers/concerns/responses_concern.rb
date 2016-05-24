@@ -8,8 +8,8 @@ module ResponsesConcern
   def res_send(data: {}, status: 200, error: false)
     # If it's an error and status is default 200, force status to 400
     if status == 200 and error == true then status = 400 end
-
-    return send_status_res(status) if data.blank?
+    
+    # return send_status_res(status) if data.blank?
 
     error ? send_err(data, status) : send_res(data, status)
   end
