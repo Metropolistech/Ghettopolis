@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
 
   def as_json(options={})
     result = super
-    result[:avatar] = self.avatar.last
+    result[:avatar] = self.avatar
     result[:skills] = self.skills
     options[:except].each { |attr| result.except!(attr)} if options.has_key?(:except)
     result

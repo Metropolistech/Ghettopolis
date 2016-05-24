@@ -21,7 +21,7 @@ class Project < ActiveRecord::Base
     result[:author] = self.author
     result[:comments] = format_comments
     result[:tags] = self.tags
-    result[:cover] = self.cover.last
+    result[:cover] = self.cover
 
     options[:except].each { |attr| result.except!(attr)} if options.has_key?(:except)
 
