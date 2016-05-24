@@ -28,6 +28,10 @@ class User < ActiveRecord::Base
       false
   end
 
+  def is_admin?
+    self.is_admin
+  end
+
   def as_json(options={})
     result = super
     result[:avatar] = self.avatar.last

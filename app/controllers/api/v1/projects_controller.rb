@@ -5,7 +5,7 @@ class Api::V1::ProjectsController < ApplicationController
   skip_before_action :authenticate_user_from_token!, only: [:index, :show, :ladder]
   skip_before_action :verify_user_confirmation!
 
-  before_action :find_project_by_slug_or_id, only: [:show, :update, :followers]
+  before_action :find_project_by_slug_or_id, only: [:show, :update, :followers, :destroy]
   before_action :get_populate_attributes, only: [:show]
   before_action :exist_required_params?, only: [:create, :update]
   before_action :filtered_params, only: [:create, :update]
@@ -45,8 +45,7 @@ class Api::V1::ProjectsController < ApplicationController
 
   # DELETE /api/v1/projects/:id
   def destroy
-    project = Project.find_by_id(params[:id])
-    return res_send status: 401 if current_user.id != project.author.id
+    return res_send status: 401 if current_user.id != project.author.id || !current_user.is_admin?
     project.update_attribute(:deleted_at, Time.now)
     res_send status: 204
   end
