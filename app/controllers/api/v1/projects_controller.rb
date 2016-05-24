@@ -11,7 +11,7 @@ class Api::V1::ProjectsController < ApplicationController
   before_action :filtered_params, only: [:create, :update]
 
   before_action only: [:update] do
-    create_image_to_entity current_user
+    create_image_to_entity @current_project
   end
 
   # GET /api/v1/projects
