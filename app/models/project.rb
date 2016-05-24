@@ -30,7 +30,9 @@ class Project < ActiveRecord::Base
 
   private
     def format_comments
-      self.comments.values.sort_by { |comment| comment[:created_at]}
+      self.comments.values
+        .sort_by { |comment| comment[:created_at] }
+        .select { |comment| comment[:deleted_at].blank? }
     end
 
     def create_slug

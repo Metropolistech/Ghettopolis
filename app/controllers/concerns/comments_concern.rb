@@ -2,41 +2,63 @@ module CommentsConcern
 
   extend ActiveSupport::Concern
 
-  @@keys = [:id, :content, :user, :created_at, :updated_at]
+  @@keys = [:id, :content, :user, :created_at, :updated_at, :deleted_at]
 
   def create_comment(user: nil, data: {})
-    return false unless user or !data.blank?
+    return false if data.blank?
 
-    comment = initialize_comment
-
-    comment[:id] = @uuid
-    comment[:content] = data[:content]
-    comment[:user] = user
-
-    serialize comment
+    initialize_comment
+      .create_comment_uuid
+      .insert_data_to_comment(data)
+      .insert_user_to_comment(user)
   end
 
   def update_comment(comment: nil, data: {})
     return false unless comment or !data.blank?
-    comment["content"] = data[:content]
-    comment[:updated_at] = Time.new
-    comment
+    @comment = comment
+
+    insert_data_to_comment(data)
+      .update_updated_time
   end
 
-  private
+  def destroy_comment(comment: nil)
+    return false unless comment
+    @comment = comment
 
-  def initialize_comment
-    @uuid = SecureRandom.hex.to_sym
-    hash = Hash.new
-    hash[:created_at] = Time.new
-    hash[:updated_at] = hash[:created_at]
-    hash
+    update_deleted_at
   end
 
-  def serialize(comment = {})
-    @@keys.inject({}) do |serialized, k|
-      serialized[k] = comment[k] if comment.has_key?(k)
-      serialized
+  protected
+    def initialize_comment
+      @comment = Hash.new
+      @comment[:created_at] = Time.new
+      @comment[:updated_at] = @comment[:created_at]
+      @comment[:deleted_at] = nil
+      self
     end
-  end
+
+    def create_comment_uuid
+      @comment[:id] = SecureRandom.hex.to_sym
+      self
+    end
+
+    def insert_data_to_comment(data)
+      @comment[:content] = data[:content]
+      self
+    end
+
+    def insert_user_to_comment(user)
+      @comment[:user] = user.slice(:id, :username, :avatar)
+      @comment
+    end
+
+    def update_updated_time
+      @comment[:updated_at] = Time.new
+      @comment
+    end
+
+    def update_deleted_at
+      @comment[:deleted_at] = Time.new
+      @comment
+    end
 end
