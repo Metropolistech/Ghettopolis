@@ -18,7 +18,10 @@ Rails.application.routes.draw do
       get "projects/ladder" => "projects#ladder"
       get "projects/released"
 
-      resources :users, except: [:new, :edit, :create]
+      resources :users, except: [:new, :edit, :create] do
+        get :notifications
+      end
+      
       resources :projects, except: [:new, :edit] do
         get :followers
         post :follow

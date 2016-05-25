@@ -46,6 +46,9 @@ gem 'acts-as-taggable-on', '~> 3.4'
 # AWS bucket S3
 gem 'aws-sdk', '~> 2'
 
+# Pagination
+gem 'will_paginate', '~> 3.1.0'
+
 group :test do
   # Code coverage gem
   gem 'simplecov', :require => false

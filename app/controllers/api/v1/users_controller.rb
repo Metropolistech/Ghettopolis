@@ -41,7 +41,26 @@ class Api::V1::UsersController < ApplicationController
 
   end
 
+  # GET /api/v1/users/:user_id/notifications
+  def notifications
+    notifications = Notification
+      .where(user_id: current_user.id)
+      .order('created_at DESC')
+
+    return res_send status: 204 if params[:page].to_i == 0
+
+    res_send data: {
+      total_pages: get_total_pages(notifications),
+      current_page: params[:page].to_i || 1,
+      notifications: notifications.paginate(page: params[:page], per_page: 10)
+    }
+  end
+
   private
+    def get_total_pages(collection)
+      collection.size/10 + 1
+    end
+
     def required_params
         params.require(:user).permit(
           :username,
