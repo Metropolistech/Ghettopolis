@@ -21,6 +21,8 @@ module ProjectConcern
 
     scope :available, -> { where(deleted_at: nil) }
 
+    scope :released, -> { order('released_at DESC') }
+
     serialize :comments, HashSerializer
 
     acts_as_taggable

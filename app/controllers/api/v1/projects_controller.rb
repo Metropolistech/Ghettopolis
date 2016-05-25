@@ -26,15 +26,6 @@ class Api::V1::ProjectsController < ApplicationController
     res_send(status: 204)
   end
 
-  # PUT /api/v1/projects/:id
-  def update
-    @updated_project = current_user
-      .update_project! data: @filtered_params, project_id: @current_project.id
-    return res_send status: 204 unless @updated_project
-    return res_send data: @updated_project if @updated_project.errors.blank?
-    res_send data: @updated_project.errors.messages, error: true
-  end
-
   # POST /api/v1/projects
   def create
     @current_project = current_user
@@ -44,11 +35,25 @@ class Api::V1::ProjectsController < ApplicationController
     res_send data: @current_project.errors.messages, error: true
   end
 
+  # PUT /api/v1/projects/:id
+  def update
+    @updated_project = current_user
+      .update_project! data: @filtered_params, project_id: @current_project.id
+    return res_send status: 204 unless @updated_project
+    return res_send data: @updated_project if @updated_project.errors.blank?
+    res_send data: @updated_project.errors.messages, error: true
+  end
+
   # DELETE /api/v1/projects/:id
   def destroy
     return res_send status: 401 if current_user.id != @current_project.author.id && !current_user.is_admin?
     @current_project.update_attribute(:deleted_at, Time.now)
     res_send status: 204
+  end
+
+  # GET /api/v1/projects/released
+  def released
+    res_send data: Project.released
   end
 
   # POST /api/v1/projects/:project_id/follow

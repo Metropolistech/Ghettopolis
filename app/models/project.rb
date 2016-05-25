@@ -2,9 +2,15 @@ class Project < ActiveRecord::Base
   include ProjectConcern
 
   before_create :create_slug
+  before_save :update_released_date_if_is_status_released
+
   validate :check_tag_list!
 
   attr_accessor :followers_count
+
+  def update_released_date_if_is_status_released
+    self.released_at = Time.now if is_status_released? and self.released_at === nil
+  end
 
   def followers_count
     self.followers.count
@@ -29,6 +35,10 @@ class Project < ActiveRecord::Base
   end
 
   private
+    def is_status_released?
+      self.status === "released" ? true : false
+    end
+
     def format_comments
       self.comments.values
         .sort_by { |comment| comment[:created_at] }
