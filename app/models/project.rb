@@ -5,7 +5,6 @@ class Project < ActiveRecord::Base
   before_create :create_slug
 
   before_save :update_dates_if_status_changed!
-
   before_save :notify_followers_if_status_changed!
 
   validate :check_tag_list!
@@ -13,14 +12,13 @@ class Project < ActiveRecord::Base
   attr_accessor :followers_count
 
   def update_dates_if_status_changed!
-    self.released_at = Time.now if is_status_released? and self.released_at === nil
-    self.production_at = Time.now if is_status_production? and self.production_at === nil
+    self.released_at = Time.now if is_status_released_changed?
+    self.production_at = Time.now if is_status_production_changed?
   end
 
   def notify_followers_if_status_changed!
-    if is_status_released? or is_status_production?
-      notify_project_followers self.followers, 1, self
-    end
+    notify_project_followers(self.followers, 1, self) if is_status_released_changed?
+    notify_project_followers(self.followers, 2, self) if is_status_production_changed?
   end
 
   def followers_count
@@ -46,6 +44,14 @@ class Project < ActiveRecord::Base
   end
 
   private
+    def is_status_released_changed?
+      is_status_released? and Project.find_by_id(self.id).released_at === nil
+    end
+
+    def is_status_production_changed?
+      is_status_production? and Project.find_by_id(self.id).production_at === nil
+    end
+
     def is_status_released?
       self.status === "released" ? true : false
     end

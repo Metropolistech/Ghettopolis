@@ -12,7 +12,11 @@ module UserConcern
     has_many :follow_projects
     has_many :followed_projects, -> { where deleted_at: nil }, through: :follow_projects, source: :project
     has_many :projects, -> { where deleted_at: nil }, foreign_key: "author_id", class_name: "Project"
-    has_many :notifications, -> { select(:id, :payload, :notification_type, :seen_at, :created_at) }
+    has_many :notifications, -> {
+      select(:id, :payload, :notification_type, :seen_at, :created_at)
+      .order("created_at DESC")
+      .limit(10)
+    }
 
     has_one :avatar, -> { order created_at: :desc }, :class_name => "Image", as: :img_target, dependent: :destroy
 

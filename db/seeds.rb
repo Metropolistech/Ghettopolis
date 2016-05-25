@@ -5,7 +5,3 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-
-NotificationType.create(name: "project_released")
-NotificationType.create(name: "project_production")
-NotificationType.create(name: "competition_winner")
