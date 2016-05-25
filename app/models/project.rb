@@ -1,15 +1,26 @@
 class Project < ActiveRecord::Base
   include ProjectConcern
+  include NotificationConcern
 
   before_create :create_slug
-  before_save :update_released_date_if_is_status_released
+
+  before_save :update_dates_if_status_changed!
+
+  before_save :notify_followers_if_status_changed!
 
   validate :check_tag_list!
 
   attr_accessor :followers_count
 
-  def update_released_date_if_is_status_released
+  def update_dates_if_status_changed!
     self.released_at = Time.now if is_status_released? and self.released_at === nil
+    self.production_at = Time.now if is_status_production? and self.production_at === nil
+  end
+
+  def notify_followers_if_status_changed!
+    if is_status_released? or is_status_production?
+      notify_project_followers self.followers, 1, self
+    end
   end
 
   def followers_count
@@ -37,6 +48,10 @@ class Project < ActiveRecord::Base
   private
     def is_status_released?
       self.status === "released" ? true : false
+    end
+
+    def is_status_production?
+      self.status === "production" ? true : false
     end
 
     def format_comments

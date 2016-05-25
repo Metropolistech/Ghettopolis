@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160525131004) do
+ActiveRecord::Schema.define(version: 20160525132943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,10 +75,11 @@ ActiveRecord::Schema.define(version: 20160525131004) do
   create_table "notifications", force: :cascade do |t|
     t.integer  "user_id"
     t.datetime "seen_at"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.jsonb    "payload"
     t.string   "notification_type"
+    t.boolean  "is_read",           default: false
   end
 
   add_index "notifications", ["user_id"], name: "index_notifications_on_user_id", using: :btree
@@ -97,6 +98,7 @@ ActiveRecord::Schema.define(version: 20160525131004) do
     t.string   "released_youtube_id"
     t.datetime "deleted_at"
     t.datetime "released_at"
+    t.datetime "production_at"
   end
 
   add_index "projects", ["author_id"], name: "index_projects_on_author_id", using: :btree
