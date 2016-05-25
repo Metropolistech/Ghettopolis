@@ -9,12 +9,14 @@ class User < ActiveRecord::Base
 
   def update_project!(project_id: nil, data: {})
       _id = project_id
-      project = self.is_admin ? Project.find_by_id(_id) : self.projects.find(_id)
-      project.attributes = data
-      project.save
-      project
-    rescue
-      false
+
+      project = self.is_admin   ?
+        Project.find_by_id(_id) :
+        self.projects.find_by_id(_id)
+
+      return false if project.blank?
+      project.update(data)
+      project.save ? project : false
   end
 
   def follow_project!(project_id)
