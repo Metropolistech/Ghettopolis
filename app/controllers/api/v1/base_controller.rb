@@ -25,10 +25,18 @@ class Api::V1::BaseController < ActionController::Base
   alias_method :devise_user_signed_in?, :user_signed_in?
 
   def authenticate_user_from_token!
-    if claims and user = User.find(claims['user_id'])
+    if claims and user = User.find_by_id(claims['user_id'])
       @user = user
     else
-      return render_unauthorized
+      render_unauthorized
+    end
+  end
+
+  def authenticate_user_from_token_without_render!
+    if claims and user = User.find_by_id(claims['user_id'])
+      @user = user
+    else
+      nil
     end
   end
 
@@ -45,7 +53,7 @@ class Api::V1::BaseController < ActionController::Base
   end
 
   def render_unauthorized(payload = [Authorization: "You are not authorized perform this action."])
-    res_send data: payload, status: 401, error: true
+    return res_send data: payload, status: 401, error: true
   end
 
   def token_from_request

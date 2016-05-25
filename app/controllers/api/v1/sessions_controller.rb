@@ -1,7 +1,7 @@
 class Api::V1::SessionsController < ApplicationController
   skip_before_action :authenticate_user_from_token!
   skip_before_action :verify_user_confirmation!
-  
+
   before_action :ensure_params_exist
 
   # POST /api/session
@@ -24,8 +24,11 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def open_session
-    authenticate_user_from_token!
-    res_send data: { user: @user, token: @auth_token }, status: 201
+    if authenticate_user_from_token_without_render!
+      res_send data: { user: @user, token: @auth_token }, status: 201
+    else
+      invalid_user
+    end
   end
 
   private
