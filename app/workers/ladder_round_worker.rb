@@ -18,6 +18,7 @@ class LadderRoundWorker
       .update_winner_project_status
       .get_ladder_state
       .send_mail_to_winner_project_author
+      .notify_all_winner_followers
       .close_current_round
       .open_new_round
   end
@@ -54,9 +55,14 @@ class LadderRoundWorker
 
   def send_mail_to_winner_project_author
     CongratsWinnerMailer
-      .send_congrats(to: @round.winner)
+      .send_congrats(to: @round.winner.author.email)
       .deliver_later
     self
+  end
+
+  def notify_all_winner_followers
+    NotificationWorker
+      .notify_project_followers(@round.winner.followers, 3, @round.winner)
   end
 
   def close_current_round
