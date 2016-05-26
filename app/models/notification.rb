@@ -10,7 +10,7 @@ class Notification < ActiveRecord::Base
   def serializable_hash(options = nil)
     result = super
     result[:payload] = {
-      project: Project.find_by_id(result["project_id"]).as_json
+      project: Project.find_by_id(Notification.find_by_id(self.id).project_id).as_json
     }
     result
   end
