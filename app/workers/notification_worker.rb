@@ -4,7 +4,7 @@ class NotificationWorker
 
   def self.notify_project_followers(followers, type_id, payload)
     followers.each do |user|
-      create_notification user, @@types[type_id], payload.dup
+      create_notification user, @@types[type_id], duplicate_payload(payload)
     end
   end
 
@@ -15,7 +15,7 @@ class NotificationWorker
         notification_type: notification_type,
         payload: {
           project: payload.as_json(
-            only: [:slug, :title, :status, :youtube_id, :cover],
+            only: [:id, :slug, :title, :status, :youtube_id, :cover],
             except: [:comments, :author],
             include: {
               author: { only: [:id, :username, :avatar]}
@@ -23,5 +23,11 @@ class NotificationWorker
           )
         }
       )
+  end
+
+  def self.duplicate_payload(payload)
+    dup = payload.dup
+    dup[:id] = payload.id
+    dup
   end
 end
