@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       # Singular routes
       put 'round', to: 'ladder_round#update'
+      get 'notifications', to: 'notifications#index'
       put 'notifications', to: 'notifications#update'
 
       # Devise routes
@@ -18,9 +19,7 @@ Rails.application.routes.draw do
       end
 
       # Ressources routes
-      resources :users, except: [:new, :edit, :create] do
-        get :notifications
-      end
+      resources :users, except: [:new, :edit, :create]
 
       resources :projects, except: [:new, :edit] do
         get :followers
