@@ -13,13 +13,15 @@ class NotificationWorker
       .create(
         user: user,
         notification_type: notification_type,
-        payload: payload.as_json(
-          only: [:slug, :title, :status, :youtube_id, :cover],
-          except: [:comments, :author],
-          include: {
-            author: { only: [:id, :username, :avatar]}
-          }
-        )
+        payload: {
+          project: payload.as_json(
+            only: [:slug, :title, :status, :youtube_id, :cover],
+            except: [:comments, :author],
+            include: {
+              author: { only: [:id, :username, :avatar]}
+            }
+          )
+        }
       )
   end
 end
