@@ -7,6 +7,14 @@ class Notification < ActiveRecord::Base
     self.seen_at = Time.now if is_read? && has_never_been_read?
   end
 
+  def serializable_hash(options = nil)
+    result = super
+    result[:payload] = {
+      project: Project.find_by_id(result["project_id"]).as_json
+    }
+    result
+  end
+
   private
     def is_read?
       self.is_read

@@ -17,9 +17,9 @@ class Project < ActiveRecord::Base
 
   def notify_followers_if_status_changed!
     NotificationWorker
-      .notify_project_followers(self.followers, 1, self) if is_status_released_changed?
+      .notify_project_followers(self.followers, 1, self.id) if is_status_released_changed?
     NotificationWorker
-      .notify_project_followers(self.followers, 2, self) if is_status_production_changed?
+      .notify_project_followers(self.followers, 2, self.id) if is_status_production_changed?
   end
 
   def followers_count

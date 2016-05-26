@@ -62,7 +62,7 @@ class LadderRoundWorker
 
   def notify_all_winner_followers
     NotificationWorker
-      .notify_project_followers(@round.winner.followers, 3, @round.winner)
+      .notify_project_followers(@round.winner.followers, 3, @round.winner.id)
   end
 
   def close_current_round

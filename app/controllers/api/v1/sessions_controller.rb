@@ -20,7 +20,7 @@ class Api::V1::SessionsController < ApplicationController
     return invalid_login_attempt unless @user.valid_password?(user_params[:password])
 
     @auth_token = JsonWebToken.encode(JsonWebToken.create_user_payload(@user))
-    res_send data: { user: @user, token: @auth_token }, status: 201
+    res_send data: { user: @user.populate(["notifications"]), token: @auth_token }, status: 201
   end
 
   def open_session
