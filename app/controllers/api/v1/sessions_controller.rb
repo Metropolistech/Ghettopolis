@@ -25,7 +25,7 @@ class Api::V1::SessionsController < ApplicationController
 
   def open_session
     if authenticate_user_from_token_without_render!
-      res_send data: { user: @user, token: @auth_token }, status: 201
+      res_send data: { user: @user.populate(["notifications"]), token: @auth_token }, status: 201
     else
       invalid_user
     end
