@@ -8,8 +8,6 @@ class Project < ActiveRecord::Base
 
   validate :check_tag_list!
 
-  attr_accessor :followers_count
-
   @@to_notify_status = ["competition", "production", "released"]
 
   def update_dates_if_status_changed!

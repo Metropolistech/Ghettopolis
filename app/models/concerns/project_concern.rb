@@ -36,6 +36,8 @@ module ProjectConcern
 
     acts_as_taggable
 
+    attr_accessor :followers_count
     attr_accessor :image_data
+    attr_accessor :search_score
   end
 end
