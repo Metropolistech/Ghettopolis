@@ -3,8 +3,8 @@ class Project < ActiveRecord::Base
 
   before_create :create_slug
 
-  before_save :update_dates_if_status_changed!
-  before_save :notify_followers_if_status_changed!
+  before_update :update_dates_if_status_changed!
+  before_update :notify_followers_if_status_changed!
 
   validate :check_tag_list!
 
@@ -13,15 +13,15 @@ class Project < ActiveRecord::Base
   @@to_notify_status = ["competition", "production", "released"]
 
   def update_dates_if_status_changed!
-    if @@to_notify_status.include?(self.status) and is_status_changed?(self.status)
-      self[get_method_by_status_name!(self.status)] = Time.now
+    if @@to_notify_status.include?(self.status) and is_status_changed?
+      self[get_method_by_status_name!] = Time.now
     end
   end
 
   def notify_followers_if_status_changed!
-    if @@to_notify_status.include?(self.status) and is_status_changed?(self.status)
+    if @@to_notify_status.include?(self.status) and is_status_changed?
       NotificationWorker
-        .notify_project_followers(self.followers, get_notification_id_by_status_name!(self.status), self.id)
+        .notify_project_followers(self.followers, get_notification_id_by_status_name!, self.id)
     end
   end
 
@@ -52,14 +52,13 @@ class Project < ActiveRecord::Base
       self.status === name ? true : false
     end
 
-    def is_status_changed?(name)
-      is_status?(name) and Project
-        .find_by_id(self.id).send(get_method_by_status_name!(name))
-        .blank?
+    def is_status_changed?
+      is_status?(self.status) and Project
+        .find_by_id(self.id).send(get_method_by_status_name!).blank?
     end
 
-    def get_method_by_status_name!(name)
-      case name
+    def get_method_by_status_name!
+      case self.status
       when "released"
         :released_at
       when "production"
@@ -69,9 +68,9 @@ class Project < ActiveRecord::Base
       end
     end
 
-    def get_notification_id_by_status_name!(name)
-      case name
-      when "release"
+    def get_notification_id_by_status_name!
+      case self.status
+      when "released"
         1
       when "production"
         2
