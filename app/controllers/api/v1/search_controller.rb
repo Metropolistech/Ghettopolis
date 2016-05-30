@@ -2,7 +2,7 @@ class Api::V1::SearchController < ApplicationController
   skip_before_action :authenticate_user_from_token!
   skip_before_action :verify_user_confirmation!
 
-  def create
+  def index
     @q = params[:query]
 
     res_send data: {
