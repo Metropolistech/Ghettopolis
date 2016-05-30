@@ -10,16 +10,19 @@ class Project < ActiveRecord::Base
 
   attr_accessor :followers_count
 
+  @@to_notify_status = ["competition", "production", "released"]
+
   def update_dates_if_status_changed!
-    self.released_at = Time.now if is_status_released_changed?
-    self.production_at = Time.now if is_status_production_changed?
+    if @@to_notify_status.include?(self.status) and is_status_changed?(self.status)
+      self[get_method_by_status_name!(self.status)] = Time.now
+    end
   end
 
   def notify_followers_if_status_changed!
-    NotificationWorker
-      .notify_project_followers(self.followers, 1, self.id) if is_status_released_changed?
-    NotificationWorker
-      .notify_project_followers(self.followers, 2, self.id) if is_status_production_changed?
+    if @@to_notify_status.include?(self.status) and is_status_changed?(self.status)
+      NotificationWorker
+        .notify_project_followers(self.followers, get_notification_id_by_status_name!(self.status), self.id)
+    end
   end
 
   def followers_count
@@ -45,20 +48,36 @@ class Project < ActiveRecord::Base
   end
 
   private
-    def is_status_released_changed?
-      is_status_released? and Project.find_by_id(self.id).released_at === nil
+    def is_status?(name)
+      self.status === name ? true : false
     end
 
-    def is_status_production_changed?
-      is_status_production? and Project.find_by_id(self.id).production_at === nil
+    def is_status_changed?(name)
+      is_status?(name) and Project
+        .find_by_id(self.id).send(get_method_by_status_name!(name))
+        .blank?
     end
 
-    def is_status_released?
-      self.status === "released" ? true : false
+    def get_method_by_status_name!(name)
+      case name
+      when "released"
+        :released_at
+      when "production"
+        :production_at
+      when "competition"
+        :competition_at
+      end
     end
 
-    def is_status_production?
-      self.status === "production" ? true : false
+    def get_notification_id_by_status_name!(name)
+      case name
+      when "release"
+        1
+      when "production"
+        2
+      when "competition"
+        4
+      end
     end
 
     def format_comments

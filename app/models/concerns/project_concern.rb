@@ -20,7 +20,7 @@ module ProjectConcern
     scope :in_competion,
       -> { joins(:author).where(status: :competition) }
 
-    scope :available, 
+    scope :available,
       -> { where(deleted_at: nil) }
 
     scope :released,
