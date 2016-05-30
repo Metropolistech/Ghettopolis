@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160530095135) do
+ActiveRecord::Schema.define(version: 20160530160929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,9 +60,9 @@ ActiveRecord::Schema.define(version: 20160530095135) do
     t.integer  "winner_id"
     t.string   "status",          default: "running", null: false
     t.jsonb    "ladder_state"
+    t.integer  "last_updater_id"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
-    t.integer  "last_updater_id"
     t.datetime "date"
   end
 
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 20160530095135) do
     t.integer  "author_id"
     t.string   "status",              default: "draft"
     t.text     "description"
-    t.jsonb    "comments",            default: {},      null: false
+    t.jsonb    "comments",            default: {}
     t.string   "slug"
     t.string   "released_youtube_id"
     t.datetime "deleted_at"

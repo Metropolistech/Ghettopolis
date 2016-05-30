@@ -18,7 +18,7 @@ end
 class User
   def create_random_project(title: nil, status: "draft")
     sRand = SecureRandom
-    Project.create({
+    p = Project.create({
       author: self,
       title: title || sRand.hex(4),
       youtube_id: sRand.hex(2),
@@ -26,5 +26,7 @@ class User
       description: sRand.hex,
       tag_list: "#{sRand.hex(2)},#{sRand.hex(2)},#{sRand.hex(2)}",
     })
+    p.save!
+    p
   end
 end
