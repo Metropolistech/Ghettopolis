@@ -38,6 +38,7 @@ module ProjectConcern
 
     attr_accessor :followers_count
     attr_accessor :image_data
+    attr_accessor :ladder_score
     attr_accessor :search_score
   end
 end
