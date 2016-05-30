@@ -27,6 +27,12 @@ module UserConcern
     scope :find_by_lower_username,
       -> (username) { where("lower(username) = ?", username.downcase) }
 
+    scope :search,
+      -> (query) {
+        where("LOWER(username) LIKE :query", query: "%#{query.downcase}%")
+        .order('created_at DESC')
+      }
+
     attr_accessor :image_data
   end
 end

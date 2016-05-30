@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       put 'round', to: 'ladder_round#update'
       get 'notifications', to: 'notifications#index'
       put 'notifications', to: 'notifications#update'
+      post 'search', to: 'search#create'
 
       # Devise routes
       devise_for :users, :skip => :all
