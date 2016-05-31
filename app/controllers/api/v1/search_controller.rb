@@ -40,7 +40,7 @@ class Api::V1::SearchController < ApplicationController
     end
 
     def search_projects
-      Project.search(@q).map { |project|
+      Project.available.search(@q).map { |project|
         project
           .search_score = (project.title.downcase.include?(@q) ? 1 : 0 ) * 100 +
           (project.description.downcase.include?(@q) ? 1 : 0) * 80 +
