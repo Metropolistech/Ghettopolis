@@ -4,7 +4,6 @@ module LadderConcern
   class_methods do
     def populate_ladder
       self
-        .available
         .in_competion
         .map { |project|
           @project = project

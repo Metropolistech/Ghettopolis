@@ -17,11 +17,10 @@ module ProjectConcern
     validates :youtube_id, :title, :author_id, :description, presence: true
     validates :status, inclusion: { in: ["draft", "competition", "production", "released"] }
 
+    default_scope { where(deleted_at: nil) }
+    
     scope :in_competion,
       -> { joins(:author).where(status: :competition) }
-
-    scope :available,
-      -> { where(deleted_at: nil) }
 
     scope :released,
       -> { where(status: "released").order('released_at DESC') }

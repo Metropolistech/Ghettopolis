@@ -16,7 +16,7 @@ class Api::V1::ProjectsController < ApplicationController
 
   # GET /api/v1/projects
   def index
-    res_send(data: Project.available)
+    res_send(data: Project.all)
   end
 
   # GET /api/v1/projects/:id
@@ -53,13 +53,13 @@ class Api::V1::ProjectsController < ApplicationController
 
   # GET /api/v1/projects/released
   def released
-    res_send data: Project.available.released
+    res_send data: Project.released
   end
 
   # POST /api/v1/projects/:project_id/follow
   def follow
     _id = params[:project_id]
-    project = Project.available.find_by_id(_id)
+    project = Project.find_by_id(_id)
     return res_send status: 204 if project.blank?
     current_user.follow_project!(_id)
     res_send data: project.populate(['followers'])
@@ -68,7 +68,7 @@ class Api::V1::ProjectsController < ApplicationController
   # POST /api/v1/projects/:project_id/unfollow
   def unfollow
     _id = params[:project_id]
-    project = Project.available.find_by_id(_id)
+    project = Project.find_by_id(_id)
     return res_send status: 204 if project.blank?
     current_user.unfollow_project!(_id)
     res_send data: Project.find_by_id(_id).populate(['followers'])
