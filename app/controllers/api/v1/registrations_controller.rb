@@ -44,7 +44,7 @@ class Api::V1::RegistrationsController < ApplicationController
     ResetPasswordMailer
       .send_reset_password(user: user)
       .deliver_now
-    res_send
+    res_send data: { message: "OK" }
   end
 
   private
