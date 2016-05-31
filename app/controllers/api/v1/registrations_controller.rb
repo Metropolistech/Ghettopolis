@@ -3,7 +3,9 @@ class Api::V1::RegistrationsController < ApplicationController
   skip_before_action :verify_user_confirmation!
 
   before_action :update_register_params, only: [:update]
-  # POST /api/register
+  before_action :reset_register_params, only: [:reset]
+
+  # POST /api/v1/register
   def create
     return res_send data: [createRegistration: "Missing required user parameter"], error: true if user_params.blank?
 
@@ -16,7 +18,7 @@ class Api::V1::RegistrationsController < ApplicationController
     res_send data: @user.errors.messages, error: true
   end
 
-  # PUT /api/register
+  # PUT /api/v1/register
   def update
     return res_send status: 401 unless current_user.valid_password?(params[:user][:current_password])
 
@@ -34,6 +36,14 @@ class Api::V1::RegistrationsController < ApplicationController
     res_send data: current_user, status: 201
   end
 
+  # GET /api/v1/register/reset
+  def reset
+    user = User.find_by_email(params[:email])
+    return res_send status: 204 if user.blank?
+    user.set_reset_password_token
+    
+  end
+
   private
 
     def user_params
@@ -49,6 +59,12 @@ class Api::V1::RegistrationsController < ApplicationController
           .each { |param| params.require(:user).require(param) }
         params.require(:user).permit(:current_password, :password, :password_confirmation)
       rescue => error
+        res_send data: [ParameterError: "#{error.param} is empty or missing"], error: true
+    end
+
+    def reset_register_params
+        params.require(:email)
+      rescue
         res_send data: [ParameterError: "#{error.param} is empty or missing"], error: true
     end
 end
