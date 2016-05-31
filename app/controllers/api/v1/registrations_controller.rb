@@ -1,5 +1,5 @@
 class Api::V1::RegistrationsController < ApplicationController
-  skip_before_action :authenticate_user_from_token!, only: [:create]
+  skip_before_action :authenticate_user_from_token!, only: [:create, :reset]
   skip_before_action :verify_user_confirmation!
 
   before_action :update_register_params, only: [:update]
@@ -40,8 +40,11 @@ class Api::V1::RegistrationsController < ApplicationController
   def reset
     user = User.find_by_email(params[:email])
     return res_send status: 204 if user.blank?
-    user.set_reset_password_token
-    
+    user.send(:set_reset_password_token)
+    ResetPasswordMailer
+      .send_reset_password(user: user)
+      .deliver_now
+    res_send
   end
 
   private
