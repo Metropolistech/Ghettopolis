@@ -27,7 +27,8 @@ module LadderConcern
         score_by_comments +
         score_by_votes +
         score_by_author_created_at +
-        score_by_author_projects
+        score_by_author_projects +
+        score_by_tag_list
       end
 
       def score_by_days
@@ -35,7 +36,7 @@ module LadderConcern
       end
 
       def score_by_weeks
-        - (get_date_difference(@project.competition_at.to_date) / 7) * 20
+        - (get_date_difference(@project.competition_at.to_date) / 7) * 50
       end
 
       def score_by_comments
@@ -52,6 +53,10 @@ module LadderConcern
 
       def score_by_author_projects
         @project.author.projects.count * 2
+      end
+
+      def score_by_tag_list
+        - (@project.tag_list.count * 0.25) * 20
       end
   end
 end
