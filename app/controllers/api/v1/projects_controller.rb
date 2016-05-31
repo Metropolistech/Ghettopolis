@@ -53,7 +53,7 @@ class Api::V1::ProjectsController < ApplicationController
 
   # GET /api/v1/projects/released
   def released
-    res_send data: Project.released
+    res_send data: Project.available.released
   end
 
   # POST /api/v1/projects/:project_id/follow
