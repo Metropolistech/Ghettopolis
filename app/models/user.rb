@@ -34,6 +34,12 @@ class User < ActiveRecord::Base
     self.is_admin
   end
 
+  def serializable_hash(options = nil)
+    result = super
+    result[:is_confirmed] = self.confirmed_at ? true : false
+    result
+  end
+
   def as_json(options={})
     result = super
     result[:avatar] = self.avatar
