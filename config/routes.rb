@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       devise_scope :user do
           # Registrations
           match 'register' => 'registrations#create', :via => :post, :as => :user_registration
+          match 'register' => 'registrations#update', :via => :put, :as => :edit_user_registration
           # Sessions
           match 'session' => 'sessions#create', :via => :post
           match 'session' => 'session#destroy', :via => :delete
