@@ -36,7 +36,6 @@
             .html("Vérifiez votre boîte mail pour changer votre mot de passe. Si vous n'avez pas reçu d'email et qu'il n'est pas dans vos spams, contactez nous.")
         }
       }).fail(function(error) {
-        console.log(error)
         $(".error-container").html("Attention ! Veillez a bien remplir votre email.");
       });
     });
@@ -46,7 +45,10 @@
 
       var params = serializeToJson($(this).serializeArray());
 
-      if (!params.password || !params.password_confirmation) return false;
+      if (!params.password || !params.password_confirmation) {
+        $(".error-container").html("Attention ! Vous devez renseigner votre nouveau mot de passe");
+        return false
+      };
       if (params.password != params.password_confirmation) {
         $(".error-container").html("Attention ! Votre mot de passe et sa confirmation sont différents");
         return false
@@ -57,8 +59,9 @@
         method: "post",
         data: serializeToJson($(this).serializeArray())
       }).done(function(response) {
-        if (response.status === 200) {
-          $('.form-init-reset, .error-container').remove();
+        console.log(response)
+        if (response.status === 201) {
+          $('.form-reset-password, .error-container').remove();
           $('.response').removeClass("hide")
           $('.response')
             .html("Félicitations ! Votre mot de passe à bien été changé. Rendez vous sur Metropolis.watch");
@@ -66,7 +69,19 @@
       }).fail(function(error) {
           $(".error-container").html("Attention ! Votre mot de passe est invalide");
       });
-    })
+    });
+
+    $('#password, #password_confirmation, #email').on('focus', function() {
+      $(this).parent().css({
+        border: "1px solid #F05561"
+      });
+    });
+
+    $('#password, #password_confirmation, #email').on('focusout', function() {
+      $(this).parent().css({
+        border: "1px solid white"
+      });
+    });
 	});
 
   function serializeToJson(obj) {

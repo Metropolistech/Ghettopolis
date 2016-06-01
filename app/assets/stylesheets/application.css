@@ -36,8 +36,6 @@ p {
   height: 100%;
   width: 100%;
   position: absolute;
-  /*background-image: -webkit-linear-gradient(top,rgba(42, 42, 104, 0.82),#2a2a68);
-  background-image: linear-gradient(to bottom,rgba(42, 42, 104, 0.82),#2a2a68);*/
   background-color: #2a2a68;
 }
 
@@ -56,7 +54,7 @@ p {
   -moz-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
   width: 450px;
-  height: 400px;
+  min-height: 400px;
 }
 
 .form-container img {
@@ -96,19 +94,28 @@ p {
   box-shadow: inset 0px 0px 17px -6px rgba(194,190,194,1);
   padding-right: 1px;
   margin-bottom: 25px;
+  border: 1px solid white;
+  transition: border .2s linear;
 }
 
-.password-reset-form div span {
+.form-icon {
   width: 44px;
   height: 100%;
   display: inline-block;
-  background-image: url('https://s3-eu-west-1.amazonaws.com/metropolis-images/assets/message.svg');
   background-size: 28px;
   background-repeat: no-repeat;
   background-position: center;
   margin-left: 5px;
 }
 
+.email-icon {
+  background-image: url('https://s3-eu-west-1.amazonaws.com/metropolis-images/assets/message.svg');
+}
+
+.password-icon {
+  background-image: url('https://s3-eu-west-1.amazonaws.com/metropolis-images/assets/locked.svg');
+  background-size: 22px;
+}
 .password-reset-form div input {
   width: 80%;
   height: 30px;
