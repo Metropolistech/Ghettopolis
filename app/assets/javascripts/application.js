@@ -31,6 +31,7 @@
         if (!response) return $(".error-container").html("Désolé ! Aucun utilisateur n'est inscrit avec cet email.");
         if (response.status === 200) {
           $('.form-init-reset, .error-container').remove();
+          $('.response').removeClass("hide")
           $('.response')
             .html("Vérifiez votre boîte mail pour changer votre mot de passe. Si vous n'avez pas reçu d'email et qu'il n'est pas dans vos spams, contactez nous.")
         }
@@ -58,6 +59,7 @@
       }).done(function(response) {
         if (response.status === 200) {
           $('.form-init-reset, .error-container').remove();
+          $('.response').removeClass("hide")
           $('.response')
             .html("Félicitations ! Votre mot de passe à bien été changé. Rendez vous sur Metropolis.watch");
         }
