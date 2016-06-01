@@ -1,0 +1,13 @@
+<span class="error-container"></span>
+<%= form_tag("/api/v1/register/reset", method: "post", class: "form-reset-password") do %>
+  <%= label_tag(:password, "Entrez votre nouveau mot de passe") %>
+  <%= password_field_tag :password %>
+
+  <%= label_tag(:password, "Confirmez votre nouveau mot de passe") %>
+  <%= password_field_tag :password_confirmation %>
+
+  <%= hidden_field_tag 'reset_token', params[:reset_token] %>
+
+  <%= submit_tag("Enregistrer le mot de passe") %>
+<% end %>
+<span class="response"></span>

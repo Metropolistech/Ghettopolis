@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+
+  get 'account/password/forgotten', to: 'password#forgotten'
+  get 'account/password/reset/:reset_token', to: 'password#reset'
+
   namespace :api do
     namespace :v1 do
       # Singular routes
@@ -13,8 +17,8 @@ Rails.application.routes.draw do
           # Registrations
           match 'register' => 'registrations#create', :via => :post, :as => :user_registration
           match 'register' => 'registrations#update', :via => :put, :as => :edit_user_registration
-          match 'register/reset' => 'registrations#reset', :via => :get
-          # match 'register/reset' => 'registrations#reset', :via => :post
+          match 'register/reset' => 'registrations#init_reset', :via => :get
+          match 'register/reset' => 'registrations#reset', :via => :post
           # Sessions
           match 'session' => 'sessions#create', :via => :post
           match 'session' => 'session#destroy', :via => :delete

@@ -1,0 +1,7 @@
+<span class="error-container"></span>
+<%= form_tag("/api/v1/register/reset", method: "get", class: "form-init-reset") do %>
+  <%= label_tag(:email, "Réinitialiser votre mot de passe") %>
+  <%= text_field_tag(:email) %>
+  <%= submit_tag("Réinitialiser") %>
+<% end %>
+<span class="response"></span>
