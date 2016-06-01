@@ -1,0 +1,32 @@
+<section class="forgotten-view form-view">
+  <div class="bg">
+
+  </div>
+
+  <div class="forgotten-container form-container">
+    <img src="https://s3-eu-west-1.amazonaws.com/metropolis-images/assets/landing-logo.svg" alt="landing-logo.jpg" />
+    <div class="forgotten-form password-reset-form">
+      <span class="error-container"></span>
+      <h3>Réinitialiser votre mot de passe</h3>
+      <%= form_tag("/api/v1/register/reset", method: "post", class: "form-reset-password") do %>
+        <p>
+          Entrez votre nouveau mot de passe.
+        </p>
+        <div class="">
+          <span class="form-icon password-icon"></span>
+          <%= password_field_tag :password, nil, placeholder: "Mot de passe"%>
+        </div>
+
+        <div class="">
+          <span class="form-icon password-icon"></span>
+          <%= password_field_tag :password_confirmation, nil, placeholder: "Confirmation du mot de passe" %>
+        </div>
+
+        <%= hidden_field_tag 'reset_token', params[:reset_token] %>
+
+        <%= submit_tag("Enregistrer") %>
+      <% end %>
+      <span class="response hide"></span>
+    </div>
+  </div>
+</section>
