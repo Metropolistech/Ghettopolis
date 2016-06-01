@@ -61,10 +61,11 @@
       }).done(function(response) {
         console.log(response)
         if (response.status === 201) {
-          $('.form-reset-password, .error-container').remove();
-          $('.response').removeClass("hide")
-          $('.response')
-            .html("Félicitations ! Votre mot de passe à bien été changé. Rendez vous sur Metropolis.watch");
+          // $('.form-reset-password, .error-container').remove();
+          // $('.response').removeClass("hide")
+          // $('.response')
+          //   .html("Félicitations ! Votre mot de passe à bien été changé. Rendez vous sur Metropolis.watch");
+					location.replace("http://metropolis-front.herokuapp.com");
         }
       }).fail(function(error) {
           $(".error-container").html("Attention ! Votre mot de passe est invalide");
@@ -73,7 +74,7 @@
 
     $('#password, #password_confirmation, #email').on('focus', function() {
       $(this).parent().css({
-        border: "1px solid #F05561"
+        border: "1px solid #673AB7"
       });
     });
 
