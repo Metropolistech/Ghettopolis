@@ -63,7 +63,7 @@
                                 toutes les productions que tu aimeras voir seront alors envoyées<br>
                                 à cette adresse e-mail.<br><br>
                                 <img src="https://gallery.mailchimp.com/ca42d2ea765439578c2c0afcb/images/b3f08679-2fde-48ea-b4cc-4282deb0e889.png" alt="Changer de mot de passe" style="border: none;font-size: 14px;font-weight: bold;height: auto;line-height: 100%;outline: none;text-decoration: none;text-transform: capitalize;display: inline;margin-bottom: 10px;width:200px;"> <br><br>
-                                <%= link_to 'Confirmer mon inscription', "http://#{ENV['APP_FRONT_DOMAIN']}?confirmation_token=#{@token}", :style=>"text-decoration: none;text-transform:uppercase;font-family:'Maven Pro';font-size: 14px; background: #ff525f;color:#fff;padding:12px 22px;border-radius:4px;" %>
+                                <%= link_to 'Confirmer mon inscription', api_v1_user_confirmation_url(confirmation_token: @token), :style=>"text-decoration: none;text-transform:uppercase;font-family:'Maven Pro';font-size: 14px; background: #ff525f;color:#fff;padding:12px 22px;border-radius:4px;" %>
                                 <br>
                                 <br>
                                 N'attends plus, aide les réalisateurs les plus créatifs<br>

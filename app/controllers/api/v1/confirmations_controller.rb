@@ -2,24 +2,25 @@ class Api::V1::ConfirmationsController < ApplicationController
   skip_before_action :authenticate_user_from_token!
   skip_before_action :verify_user_confirmation!
 
-  def confirm
-    return res_send status: 403 unless confirmations_params
+  before_action :confirmations_params
 
+  # POST /api/v1/confirmations
+  def confirm
     user = User.find_by_confirmation_token(params[:confirmation_token])
 
     if user
       user.confirm
-      return res_send status: 202, data: user if user.save
+      user.save
     end
 
-    return res_send status: 401
+    redirect_to "http://#{ENV['APP_FRONT_DOMAIN']}"
   end
 
   private
 
   def confirmations_params
       params.require(:confirmation_token)
-    rescue
-      nil
+    rescue => error
+      res_send data: [ParameterError: "#{error.param} is empty or missing"], error: true
   end
 end
