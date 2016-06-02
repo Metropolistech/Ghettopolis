@@ -3,8 +3,9 @@ module SearchUsersConcern
 
   def search_users
     users_from_projects = get_entities_from_collection(@projects, :author)
-    users = User.search(@q) || users_from_projects
+    users = User.search(@q)
 
+    users = users_from_projects if users.blank?
     users & users_from_projects unless users_from_projects.blank?
 
     sorted_users = map_collection(users) { |user|
