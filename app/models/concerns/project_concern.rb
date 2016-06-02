@@ -7,7 +7,7 @@ module ProjectConcern
     include LadderConcern
 
     has_many :follow_projects
-    has_many :followers, through: :follow_projects, source: :user
+    has_many :followers, through: :follow_projects, source: :user, dependent: :destroy
     has_one :cover, -> { order created_at: :desc }, :class_name => "Image", as: :img_target, dependent: :destroy
 
     belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'
@@ -18,7 +18,7 @@ module ProjectConcern
     validates :status, inclusion: { in: ["draft", "competition", "production", "released"] }
 
     default_scope { where(deleted_at: nil) }
-    
+
     scope :in_competion,
       -> { joins(:author).where(status: :competition) }
 

@@ -34,5 +34,6 @@ module UserConcern
       }
 
     attr_accessor :image_data
+    attr_accessor :search_score
   end
 end
