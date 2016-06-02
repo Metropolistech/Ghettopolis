@@ -67,7 +67,7 @@ class LadderRoundWorker
 
   def email_all_winner_followers
     @round.winner.followers.each do |user|
-      ApplicationMailer
+      MetropolisMailer
         .send_mail_to_winner_followers(to: user.email, project: @round.winner)
         .deliver_later
     end
