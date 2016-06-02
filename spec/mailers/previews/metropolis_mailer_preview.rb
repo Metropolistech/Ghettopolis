@@ -4,4 +4,9 @@ class MetropolisMailerPreview < ActionMailer::Preview
     MetropolisMailer
       .send_mail_to_winner_followers(user: User.first, project: Project.first)
   end
+
+  def send_mail_for_new_round
+    MetropolisMailer
+      .MetropolisMailer(to: User.first.email)
+  end
 end

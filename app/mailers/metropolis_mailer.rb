@@ -10,4 +10,8 @@ class MetropolisMailer < ApplicationMailer
       }
     end
   end
+
+  def send_mail_for_new_round(to: nil)
+    mail(to: to, subject: "Metropolis - Une nouvelle compétition commence")
+  end
 end
