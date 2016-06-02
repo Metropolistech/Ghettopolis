@@ -28,7 +28,7 @@ class Api::V1::LadderRoundController < ApplicationController
 
     def send_mail_to_all_users
       User.all.each do |user|
-        Metropolis
+        MetropolisMailer
           .send_mail_for_new_round(to: user.email)
           .deliver_now
       end
