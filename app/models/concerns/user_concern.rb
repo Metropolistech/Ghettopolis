@@ -29,7 +29,7 @@ module UserConcern
 
     scope :search,
       -> (query) {
-        where("LOWER(username) LIKE :query", query: "%#{query.downcase}%")
+        where("LOWER(username) LIKE :query OR LOWER(lastname) LIKE :query OR LOWER(firstname) LIKE :query", query: "%#{query.downcase}%")
         .order('created_at DESC')
       }
 
