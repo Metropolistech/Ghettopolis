@@ -24,6 +24,7 @@ Rails.application.routes.draw do
           match 'session' => 'session#destroy', :via => :delete
           # Confirmations
           match 'confirmation' => 'confirmations#confirm', :via => :get, :as => :user_confirmation
+          match 'confirmation/resend' => 'confirmations#resend', :via => :get
       end
 
       # Ressources routes
