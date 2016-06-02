@@ -3,7 +3,7 @@ class Api::V1::ProjectsController < ApplicationController
   include ImagesConcern
 
   skip_before_action :authenticate_user_from_token!, only: [:index, :show, :ladder, :followers, :released]
-  skip_before_action :verify_user_confirmation!
+  skip_before_action :verify_user_confirmation!, only: [:index, :show, :ladder, :followers, :released]
 
   before_action :find_project_by_slug_or_id, only: [:show, :update, :followers, :destroy]
   before_action :get_populate_attributes, only: [:show]

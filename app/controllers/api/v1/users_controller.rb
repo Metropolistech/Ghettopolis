@@ -32,7 +32,7 @@ class Api::V1::UsersController < ApplicationController
   # PUT /api/v1/users/:id
   def update
     return res_send status: 204 if @requested_user.blank?
-    return res_send status: 401 if @requested_user.id != current_user.id && !current_user.is_admin
+    return res_send status: 401 if @requested_user.id != current_user.id && !is_admin_and_confirmed
     return res_send data: @requested_user if @requested_user.update(@filtered_params)
     res_send data: @requested_user.errors.messages, error: true
   end
@@ -77,5 +77,9 @@ class Api::V1::UsersController < ApplicationController
     def update_networks_if_requested(networks)
       @filtered_params["networks"] = current_user.networks
         .merge(networks) unless @filtered_params["networks"].blank?
+    end
+
+    def is_admin_and_confirmed
+      current_user.is_admin && !current_user.confirmed_at.blank?
     end
 end
