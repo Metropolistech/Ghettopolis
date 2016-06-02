@@ -3,7 +3,7 @@ module SearchUsersConcern
 
   def search_users
     users_from_projects = get_entities_from_collection(@projects, :author)
-    users = User.search(@q)
+    users = User.search(@q) || users_from_projects
 
     users & users_from_projects unless users_from_projects.blank?
 
