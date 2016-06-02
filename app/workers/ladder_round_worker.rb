@@ -17,8 +17,8 @@ class LadderRoundWorker
       .get_winner_project
       .update_winner_project_status
       .get_ladder_state
-      .send_mail_to_winner_project_author
       .notify_all_winner_followers
+      .email_all_winner_followers
       .close_current_round
       .open_new_round
   end
@@ -63,6 +63,14 @@ class LadderRoundWorker
   def notify_all_winner_followers
     NotificationWorker
       .notify_project_followers(@round.winner.followers, 3, @round.winner.id)
+  end
+
+  def email_all_winner_followers
+    @round.winner.followers.each do |user|
+      ApplicationMailer
+        .send_mail_to_winner_followers(to: user.email, project: @round.winner)
+        .deliver_later
+    end
   end
 
   def close_current_round
