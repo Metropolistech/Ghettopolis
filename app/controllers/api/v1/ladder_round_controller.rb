@@ -6,6 +6,7 @@ class Api::V1::LadderRoundController < ApplicationController
     return res_send status: 401 unless current_user.is_admin
     @round = LadderRound.current_round
     time = timestamp_to_date
+    send_mail_to_all_users if @round.date.blank?
     @round.update({ date: time, last_updater: current_user })
     res_send data: @round
   end
@@ -23,5 +24,13 @@ class Api::V1::LadderRoundController < ApplicationController
 
     def timestamp_to_date
       Time.at(ladder_round_params)
+    end
+
+    def send_mail_to_all_users
+      User.all.each do |user|
+        Metropolis
+          .send_mail_for_new_round(to: user.email)
+          .deliver_now
+      end
     end
 end
