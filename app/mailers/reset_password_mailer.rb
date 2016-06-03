@@ -1,6 +1,6 @@
 class ResetPasswordMailer < ApplicationMailer
   def send_reset_password(user: nil, host: nil)
-    mail(to: user.email, subject: "Réinitialiser votre mot de passe Metropolis") do |format|
+    mail(to: user.email, subject: "Metropolis - Réinitialiser votre mot de passe") do |format|
       format.html {
         render locals: {
           user_name: user.username,

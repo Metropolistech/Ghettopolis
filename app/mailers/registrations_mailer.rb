@@ -5,6 +5,9 @@ class RegistrationsMailer < Devise::Mailer
 
   def confirmation_instructions(record, token, opts={})
     @username = record.username
+    headers = {
+        :subject => "Metropolis - Confirmer votre inscription"
+    }
     super
   end
 end
