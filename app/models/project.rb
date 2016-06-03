@@ -3,8 +3,8 @@ class Project < ActiveRecord::Base
 
   before_create :create_slug
 
-  before_save :update_dates_if_status_changed!
   before_save :notify_followers_if_status_changed!
+  before_save :update_dates_if_status_changed!
 
   validate :check_tag_list!
 
@@ -17,9 +17,12 @@ class Project < ActiveRecord::Base
   end
 
   def notify_followers_if_status_changed!
-    if @@to_notify_status.include?(self.status) and is_status_changed?
+    if @@to_notify_status.include?(self.status)
+      notifiers = self.followers
+      notifiers = [self.author] if self.status === "competition"
+
       NotificationWorker
-        .notify_project_followers(self.followers, get_notification_id_by_status_name!, self.id)
+        .notify_project_followers(notifiers, get_notification_id_by_status_name!, self.id) if is_status_changed?
     end
   end
 
@@ -52,7 +55,7 @@ class Project < ActiveRecord::Base
 
     def is_status_changed?
       project = Project.find_by_id(self.id) || self
-      is_status?(self.status) and project.send(get_method_by_status_name!).blank?
+      is_status?(self.status) and project[get_method_by_status_name!].blank?
     end
 
     def get_method_by_status_name!
