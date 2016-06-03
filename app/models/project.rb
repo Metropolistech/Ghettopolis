@@ -51,8 +51,8 @@ class Project < ActiveRecord::Base
     end
 
     def is_status_changed?
-      is_status?(self.status) and Project
-        .find_by_id(self.id).send(get_method_by_status_name!).blank?
+      project = Project.find_by_id(self.id) || self
+      is_status?(self.status) and project.send(get_method_by_status_name!).blank?
     end
 
     def get_method_by_status_name!
