@@ -7,6 +7,11 @@ class MetropolisMailerPreview < ActionMailer::Preview
 
   def send_mail_for_new_round
     MetropolisMailer
-      .MetropolisMailer(to: User.first.email)
+      .send_mail_for_new_round(to: User.first.email)
+  end
+
+  def send_congrats_to_winner
+    MetropolisMailer
+      .send_congrats_to_winner(user: User.first)
   end
 end

@@ -54,8 +54,8 @@ class LadderRoundWorker
   end
 
   def send_mail_to_winner_project_author
-    CongratsWinnerMailer
-      .send_congrats(to: @round.winner.author.email)
+    MetropolisMailer
+      .send_congrats_to_winner(user: @round.winner.author)
       .deliver_later
     self
   end
