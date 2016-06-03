@@ -3,8 +3,8 @@ class Project < ActiveRecord::Base
 
   before_create :create_slug
 
-  before_update :update_dates_if_status_changed!
-  before_update :notify_followers_if_status_changed!
+  before_save :update_dates_if_status_changed!
+  before_save :notify_followers_if_status_changed!
 
   validate :check_tag_list!
 
