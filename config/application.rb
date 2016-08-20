@@ -25,7 +25,7 @@ module Metropolis
 
     config.middleware.insert_before 0, 'Rack::Cors', debug: true, logger: (-> { Rails.logger }) do
       allow do
-        origins 'http://app.metropolis.watch'
+        origins '*'
         resource '*', :headers => :any, :methods => [:get, :post, :put, :patch, :delete, :options]
       end
     end
