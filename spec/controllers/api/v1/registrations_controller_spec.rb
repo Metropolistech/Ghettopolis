@@ -10,34 +10,28 @@ RSpec.describe Api::V1::RegistrationsController, type: :controller do
         post :create, format: :json, :data => nil
       end
 
-      it "return 404" do
-        expect(response.status).to eq(404)
-        expect(JSON(response.body)['errors'].blank?).to eq(false)
-      end
-    end
-
-    context "when wrong password_confirmation" do
-      before do
-        post :create, format: :json, :user => { username: "DonutLover", email: "homer@contact.com", password: "KillBart", password_confirmation: "nothing" }
-      end
-
-      it "return response status 401 and errors object" do
-        expect(response.status).to eq(200)
-        expect(JSON(response.body)['status']).to eq(401)
+      it "return 400" do
+        expect(response.status).to eq(400)
         expect(JSON(response.body)['errors'].blank?).to eq(false)
       end
     end
 
     context "when user data are setted" do
       before do
-        post :create, format: :json, :user => { username: "DonutLover", email: "homer@contact.com", password: "KillBart", password_confirmation: "KillBart" }
+        post :create, format: :json, :user => {
+          username: "DonutLover",
+          firstname: "Homer",
+          lastname: "Simpson",
+          email: "homer@contact.com",
+          password: "KillBart"
+        }
       end
 
       it "return response status 201 and user data" do
         response_data = JSON(response.body)
         user = response_data['data']['user']
 
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(201)
         expect(response_data['status']).to eq(201)
 
         expect(user.blank?).to eq(false)

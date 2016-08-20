@@ -10,8 +10,8 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
         post :create, format: :json
       end
 
-      it "return 404" do
-        expect(response.status).to eq(404)
+      it "return 400" do
+        expect(response.status).to eq(400)
         expect(JSON(response.body)['errors'].blank?).to eq(false)
       end
     end
@@ -21,8 +21,8 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
         post :create, format: :json, :user => { password: "KillBart" }
       end
 
-      it "return 404" do
-        expect(response.status).to eq(404)
+      it "return 400" do
+        expect(response.status).to eq(400)
         expect(JSON(response.body)['errors'].blank?).to eq(false)
       end
     end
@@ -32,8 +32,8 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
         post :create, format: :json, :user => { email: "homer@contact.com" }
       end
 
-      it "return 404" do
-        expect(response.status).to eq(404)
+      it "return 400" do
+        expect(response.status).to eq(400)
         expect(JSON(response.body)['errors'].blank?).to eq(false)
       end
     end
@@ -78,7 +78,7 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
       it "return data status 201 and user object with new token" do
         response_data = JSON(response.body)
 
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(201)
         expect(response_data['status']).to eq(201)
 
         expect(response_data['data']['user'].blank?).to eq(false)
@@ -103,7 +103,7 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
       it "return data status 201 and user object with same token" do
         response_data = JSON(response.body)
 
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(201)
         expect(response_data['status']).to eq(201)
 
         expect(response_data['data']['user'].blank?).to eq(false)

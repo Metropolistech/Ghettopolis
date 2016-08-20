@@ -7,7 +7,7 @@
 development:
   adapter: postgresql
   encoding: utf8
-  database: metropolis_development
+  database: ghettopolis_development
   pool: 5
   username:
   password:
@@ -18,7 +18,7 @@ development:
 test: &TEST
   adapter: postgresql
   encoding: utf8
-  database: metropolis_test
+  database: ghettopolis_development
   pool: 5
   username:
   password:
@@ -26,7 +26,7 @@ test: &TEST
 production:
   adapter: postgresql
   encoding: utf8
-  database: metropolis_production
+  database: ghettopolis_development
   pool: 5
   username:
   password:

@@ -17,6 +17,6 @@ class JsonWebToken
   end
 
   def self.create_user_payload(user)
-    { user_id: user.id, user_email: user.email, user_username: user.username }
+    { user_id: user.id }
   end
 end

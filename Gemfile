@@ -40,11 +40,29 @@ gem 'jwt'
 gem 'devise'
 gem 'rack-cors'
 
+# Tags
+gem 'acts-as-taggable-on', '~> 3.4'
+
+# AWS bucket S3
+gem 'aws-sdk', '~> 2'
+
+# Pagination
+gem 'will_paginate', '~> 3.1.0'
+
+group :test do
+  # Code coverage gem
+  gem 'simplecov', :require => false
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   # Gem to have nyan cat color when the tests are running
   gem 'nyan-cat-formatter'
+  # Get environement variables from .env file
+  gem 'dotenv-rails'
+  # Using shloud matchers to test models
+  gem 'shoulda-matchers', '~> 3.1'
 end
 
 group :development do
@@ -54,3 +72,6 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
+
+# Have better logs in heroku with Rails
+gem 'rails_12factor', group: :production
