@@ -63,14 +63,16 @@ class LadderRoundWorker
   def notify_all_winner_followers
     NotificationWorker
       .notify_project_followers(@round.winner.followers, 3, @round.winner.id)
+      self
   end
 
   def email_all_winner_followers
     @round.winner.followers.each do |user|
       MetropolisMailer
-        .send_mail_to_winner_followers(to: user.email, project: @round.winner)
+        .send_mail_to_winner_followers(user: user, project: @round.winner)
         .deliver_later
     end
+    self
   end
 
   def close_current_round
