@@ -16,6 +16,6 @@ module OriginConcern
   private
 
   def production_origin?
-    request.headers['SERVER_NAME'] == ENV['PRODUCTION_ORIGIN']
+    request.headers['SERVER_NAME'] != ENV['PRODUCTION_ORIGIN']
   end
 end
