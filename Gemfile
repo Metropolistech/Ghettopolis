@@ -38,7 +38,7 @@ gem 'database_cleaner'
 # Authentication
 gem 'jwt'
 gem 'devise'
-gem 'rack-cors'
+gem 'rack-cors', require: 'rack/cors'
 
 # Tags
 gem 'acts-as-taggable-on', '~> 3.4'
