@@ -1,4 +1,5 @@
 class Api::V1::ConfirmationsController < ApplicationController
+  skip_before_action :check_origin, only: [:confirm]
   skip_before_action :authenticate_user_from_token!, only: [:confirm]
   skip_before_action :verify_user_confirmation!
 
