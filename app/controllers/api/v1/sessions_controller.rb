@@ -1,5 +1,4 @@
 class Api::V1::SessionsController < ApplicationController
-  skip_before_action :check_origin
   skip_before_action :authenticate_user_from_token!
   skip_before_action :verify_user_confirmation!
 
